@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+
+{% block title %}Home Page{%endblock%}
+
+{%block content%}
+{%if user.is_authenticated%}
+Welcome {{user.username}} !
+<p><a href="{%url 'ticketform'%}">submit a ticket</a></p>
+<p><a href="{% url 'admin'%}">**Admin Only!**</a></p>
+<p><a href="{%url 'logout'%}">logout</a></p>
+{%else%}
+<p>You're not logged in</p>
+<p><a href="{%url 'signup'%}">Sign up here!</a></p>
+<p><a href="{%url 'login'%}">Log in</a></p>
+{%endif%}
+{%endblock%}
+
