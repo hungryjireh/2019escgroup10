@@ -37,7 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ticket_database.apps.TicketDatabaseConfig'
+    'ticket_database.apps.TicketDatabaseConfig',
+    'jsonwebtokens.apps.JsonwebtokensConfig',
+    'rest_framework',
+    'anymail',
+
+
 ]
 
 MIDDLEWARE = [
@@ -123,4 +128,33 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 AUTH_USER_MODEL = 'ticket_database.CustomUser' # new
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAdminUser',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.AdminRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer'
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100
+}
 
+ANYMAIL = {
+    "SENDGRID_API_KEY": "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",
+}
+
+EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'acnapisutd'
+EMAIL_HOST_PASSWORD = 'happyboy96'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+DEFAULT_FROM_EMAIL = 'ACNAPI-SUTD <hello@acnapi.icu>'
