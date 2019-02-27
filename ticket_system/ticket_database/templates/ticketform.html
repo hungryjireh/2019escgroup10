@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+
+{% block title %}User Page{%endblock%}
+
+{%block content%}
+{%if user.is_authenticated%}
+Welcome {{user.username}} !
+<form method="post">
+	{%csrf_token%}
+	<br>
+  	<table border="1">
+	{{form}}
+	</table>
+	<br>
+	<button type="submit">Submit</button>
+</form>
+{%endif%}
+<p><a href="{%url 'logout'%}">Logout</a></p>
+{%endblock%}

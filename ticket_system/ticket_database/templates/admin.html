@@ -1,0 +1,9 @@
+{% extends 'base.html'%}
+
+{% block title %}Admin Page{%endblock%}
+
+{%block content%}
+Welcome {{user.username}} ! If you are seeing this, you are an admin!
+{%endblock%}
+<p><a href="{%url 'logout'%}">logout</a></p>
+{%endblock%}
