@@ -152,8 +152,8 @@ ANYMAIL = {
 
 EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'acnapisutd'
-EMAIL_HOST_PASSWORD = 'happyboy96'
+EMAIL_HOST_USER = '********'
+EMAIL_HOST_PASSWORD = '********'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
