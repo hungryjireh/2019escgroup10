@@ -37,9 +37,7 @@ class StandardUser(models.Model): #create more user id options
     def get_absolute_url(self):
         return reverse('success')
     def __str__(self):
-        string=str(self.user_id)
-        string+=self.issue_description
-        return string
+        return "ticket priority:[%s] user_id:[%s] issue_description:[%s]" % (self.ticket_priority,self.user_id,self.issue_description)
 class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
