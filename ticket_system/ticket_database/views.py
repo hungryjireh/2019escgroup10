@@ -26,6 +26,5 @@ class UserFormView(CreateView):
     model=StandardUser
     form_class=UserTicketForm
     template_name='ticketform.html'
-    
     HttpResponseRedirect('success.html')
 

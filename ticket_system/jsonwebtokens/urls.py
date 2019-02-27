@@ -1,4 +1,4 @@
-"""ticket_system URL Configuration
+"""config URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -13,15 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url, include
 from django.contrib import admin
-from django.urls import path, include
-from django.views.generic.base import TemplateView
+from django.urls import path
+from jsonwebtokens import views
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
 
+# Create a router and register our viewsets with it.
 
 urlpatterns = [
-    path('ticket_database/', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('ticket_database/', include('ticket_database.urls')),
-    path('ticket_database/', include('django.contrib.auth.urls')),
-    path('admin/', admin.site.urls),
-    path('jsonwebtokens/', include('jsonwebtokens.urls')),
+    url(r'^obtain/$', TokenObtainPairView.as_view()),
+    url(r'^refresh/$', TokenRefreshView.as_view()),
+    url(r'^verify/$', TokenVerifyView.as_view(), name='token_verify'),
 ]
