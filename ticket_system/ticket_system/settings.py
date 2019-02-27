@@ -147,7 +147,7 @@ REST_FRAMEWORK = {
 }
 
 ANYMAIL = {
-    "SENDGRID_API_KEY": "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",
+    "SENDGRID_API_KEY": "************",
 }
 
 EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
