@@ -44,6 +44,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True},
             'url': {'view_name': 'user-detail'},
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+            'email': {'required': True},
+            'username': {'required': True},
         }
         fields = ('first_name', 'last_name', 'email', 'password', 'last_login', 'date_joined', 'username', 'url')
 
@@ -71,8 +75,13 @@ class StaffSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         extra_kwargs = {
-            'password': {'write_only': True},
+            'password': {'write_only': True, 'required': True},
             'url': {'view_name': 'staff-detail'},
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+            'email': {'required': True},
+            'username': {'required': True},
+            'is_staff': {'required': True},
         }
         fields = ('first_name', 'last_name', 'email', 'password', 'last_login', 'date_joined', 'username', 'is_staff', 'url')
     def create(self, validated_data):
@@ -98,6 +107,12 @@ class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True},
             'url': {'view_name': 'superstaff-detail'},
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+            'email': {'required': True},
+            'username': {'required': True},
+            'is_superuser': {'required': True},
+            'is_staff': {'required': True},
         }
         fields = ('first_name', 'last_name', 'email', 'password', 'last_login', 'date_joined', 'username', 'is_staff', 'is_superuser', 'url')
     def create(self, validated_data):
