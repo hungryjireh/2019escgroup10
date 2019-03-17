@@ -75,7 +75,7 @@ class StaffViewSet(viewsets.ModelViewSet):
     This viewset automatically provides `list` and `detail` actions.
     """
     serializer_class = StaffSerializer
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsSuperUser,)
 
     def get_queryset(self):
         """
