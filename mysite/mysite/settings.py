@@ -41,13 +41,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'anymail',
     'mysite.apps.MySiteConfig',
-    'rest_auth',
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'rest_auth.registration',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
 ]
 SITE_ID = 1
 
