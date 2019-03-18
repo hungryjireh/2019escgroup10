@@ -2,13 +2,11 @@ from mysite.models import Message
 from mysite import views
 from mysite.serializers import UserSerializer, StaffSerializer, SuperStaffSerializer, MessageSerializer
 from django.contrib.auth.models import User
-from rest_framework import generics, permissions, renderers, viewsets, status
+from rest_framework import generics, permissions, renderers, viewsets, status, filters
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from django.contrib.auth.hashers import make_password, check_password
-from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
-from rest_auth.registration.views import SocialLoginView
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from mysite.permissions import IsSuperUser
@@ -25,6 +23,8 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = (IsAuthenticated,)
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = '__all__'
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -47,6 +47,8 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAdminUser,)
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ('username', 'email')
 
     def get_queryset(self):
         """
@@ -76,6 +78,8 @@ class StaffViewSet(viewsets.ModelViewSet):
     """
     serializer_class = StaffSerializer
     permission_classes = (IsSuperUser,)
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ('username', 'email')
 
     def get_queryset(self):
         """
@@ -91,6 +95,8 @@ class SuperStaffViewSet(viewsets.ModelViewSet):
     """
     serializer_class = SuperStaffSerializer
     permission_classes = (IsSuperUser,)
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ('username', 'email')
 
     def get_queryset(self):
         """
@@ -99,6 +105,3 @@ class SuperStaffViewSet(viewsets.ModelViewSet):
         """
         user = self.request.user
         return User.objects.filter(is_staff=True, is_superuser=True)
-
-class FacebookLogin(SocialLoginView):
-    adapter_class = FacebookOAuth2Adapter
