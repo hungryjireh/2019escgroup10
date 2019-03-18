@@ -208,7 +208,7 @@ class CheckTicketViewTest(APITestCase):
         self.assertEqual(response.status_code, 200)
 
     #checks for invalid char fields
-    def test_2(self):
+    def test_7(self):
         self.username = 'john_doe'
         self.password = 'foobar'
         self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
@@ -216,12 +216,11 @@ class CheckTicketViewTest(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.post('/tickets/', {'issue_description': 'Foo Bar', 'priority': 'abcd', 'categories': '1234'}, format='json')
         self.assertEqual(response.status_code, 400)
-    def test_email_notif(self):
+    # def test_email_notif(self):
         
 
 
         
-
 class CheckJWTToken(APITestCase):
     def test_1(self):
         self.username = 'john_doe'

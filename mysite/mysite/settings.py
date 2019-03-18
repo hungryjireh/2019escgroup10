@@ -41,10 +41,13 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'anymail',
     'mysite.apps.MySiteConfig',
+    'corsheaders',
 ]
 SITE_ID = 1
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -154,3 +157,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = 'ACNAPI-SUTD <hello@acnapi.icu>'
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8000',
+)

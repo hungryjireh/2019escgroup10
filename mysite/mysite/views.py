@@ -1,6 +1,6 @@
-from mysite.models import Message
+from mysite.models import Message, AdminReply, UserReply
 from mysite import views
-from mysite.serializers import UserSerializer, StaffSerializer, SuperStaffSerializer, MessageSerializer
+from mysite.serializers import UserSerializer, StaffSerializer, SuperStaffSerializer, MessageSerializer, AdminReplySerializer, UserReplySerializer
 from django.contrib.auth.models import User
 from rest_framework import generics, permissions, renderers, viewsets, status, filters
 from rest_framework.decorators import api_view, action
@@ -115,3 +115,45 @@ class SuperStaffViewSet(viewsets.ModelViewSet):
         """
         user = self.request.user
         return User.objects.filter(is_staff=True, is_superuser=True)
+
+class AdminReplyViewSet(viewsets.ModelViewSet):
+    serializer_class = AdminReplySerializer
+    permission_classes = (IsAdminUser,)
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ('created')
+
+    queryset = AdminReply.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        if (self.request.user.is_staff or self.request.user.is_superuser):
+            return AdminReply.objects.all()
+        else:
+            return AdminReply.objects.filter(user=user)       
+
+class UserReplyViewSet(viewsets.ModelViewSet):
+    serializer_class = UserReplySerializer
+    permission_classes = (IsAuthenticated,)
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ('created')
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+    
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        if (self.request.user.is_staff or self.request.user.is_superuser):
+            return UserReply.objects.all()
+        else:
+            return UserReply.objects.filter(user=user)       

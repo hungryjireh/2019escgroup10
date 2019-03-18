@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from mysite.models import Message
+from mysite.models import Message, AdminReply, UserReply
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.mail import EmailMultiAlternatives
@@ -198,3 +198,17 @@ class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
             user.set_password(validated_data['password'])
             user.save()
             return user
+
+class AdminReplySerializer(serializers.HyperlinkedModelSerializer):
+    created = serializers.DateTimeField(read_only=True)
+    user = serializers.ReadOnlyField(source='user.username')
+    class Meta:
+        model = AdminReply
+        fields = ('created', 'message_link', 'issue_description', 'url', 'user')
+
+class UserReplySerializer(serializers.HyperlinkedModelSerializer):
+    created = serializers.DateTimeField(read_only=True)
+    user = serializers.ReadOnlyField(source='user.username')
+    class Meta:
+        model = UserReply
+        fields = ('created', 'message_link', 'issue_description', 'url', 'user')
