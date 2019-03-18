@@ -10,6 +10,9 @@ from django.contrib.auth.hashers import make_password, check_password
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from mysite.permissions import IsSuperUser
+from django.core.exceptions import ValidationError
+import re
+from django.views.decorators.cache import cache_control
 
 # Create your views here.
 
@@ -60,12 +63,19 @@ class UserViewSet(viewsets.ModelViewSet):
     
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        # instance.first_name = request.data.get("first_name")
-        # instance.last_name = request.data.get("first_name")
-        # instance.email = request.data.get('email')
-        # instance.username = request.data.get('username')
-        instance.password = make_password(request.data.get('password'))
-        instance.save()
+        instance.password = request.data.get('password')
+        instance.confirm_password = request.data.get('confirm_password')
+        print(instance.password)
+        print(instance.confirm_password)
+        if instance.password != instance.confirm_password:
+            raise ValidationError({'no_match_password': 'Passwords do not match.'})
+        elif len(instance.password) < 8:
+            raise ValidationError({'short_password': 'Password too short. Password should be at least 8 characters long.'})
+        elif bool(re.match('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])', instance.password)) == False:
+            raise ValidationError({'weak_password': 'Password should contain numbers and at least one uppercase and at least one lowercase letter.'})
+        else:
+            instance.password = make_password(request.data.get('password'))
+            instance.save()
 
         serializer = self.get_serializer(data=instance)
         serializer.is_valid(raise_exception=True)

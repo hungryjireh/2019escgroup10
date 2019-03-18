@@ -8,16 +8,6 @@ from django.contrib.auth.models import User
 import http.client
 import requests
 import unittest
-# from rest_framework.decorators import api_view, permission_classes
-# from rest_framework.permissions import IsAuthenticated
-# from django.http import JsonResponse
-
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def check_user(request):
-#     user = request.user
-#     # use user object here
-#     return JsonResponse({})
 
 class CheckUserViewTest(APITestCase):
 
@@ -141,11 +131,11 @@ class CheckUserViewTest(APITestCase):
         response = self.client.get('/users/')
         self.assertEqual(response.status_code, 200)
 
-    #can view staff database as user has adminuser privileges
+    #can view staff database as user has superuser privileges
     def test_12(self):
         self.username = 'john_doe'
         self.password = 'foobar'
-        self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
+        self.user = User.objects.create(username=self.username, password=self.password, is_superuser=True)
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
         response = self.client.get('/staff/')
@@ -169,7 +159,7 @@ class CheckTicketViewTest(APITestCase):
         self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        response = self.client.post('/tickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'acnapi'}, format='json')
+        response = self.client.post('/tickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'api_devops'}, format='json')
         self.assertEqual(response.status_code, 201)
 
     #invalid request: category does not exist
@@ -179,12 +169,12 @@ class CheckTicketViewTest(APITestCase):
         self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        response = self.client.post('/tickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'ACNAPI'}, format='json')
+        response = self.client.post('/tickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'acnapi'}, format='json')
         self.assertEqual(response.status_code, 400)
     
     #unauthorized request: not logged in, thus not valid user and thus cannot post ticket
     def test_3(self):
-        response = self.client.post('/tickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'acnapi'}, format='json')
+        response = self.client.post('/tickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'api_devops'}, format='json')
         self.assertEqual(response.status_code, 401)
 
     #unauthorized request: not logged in, thus not valid user and cannot view all tickets

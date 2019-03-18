@@ -22,6 +22,7 @@ from rest_framework_simplejwt.views import (
 )
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 
 router = routers.DefaultRouter()
 router.register(r'tickets', views.MessageViewSet)

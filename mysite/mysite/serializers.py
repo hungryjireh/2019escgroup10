@@ -13,7 +13,7 @@ class MessageSerializer(serializers.HyperlinkedModelSerializer):
     created = serializers.DateTimeField(read_only=True)
     class Meta:
         model = Message
-        fields = ('created', 'priority', 'categories', 'issue_description', 'user', 'url')
+        fields = ('created', 'priority', 'categories', 'issue_description', 'user', 'url', 'resolved')
     
     def create(self, validated_data):
         message = Message(
@@ -38,7 +38,12 @@ class MessageSerializer(serializers.HyperlinkedModelSerializer):
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     password = serializers.CharField(
-        style={'input_type': 'password'}
+        style={'input_type': 'password'},
+        write_only = True,
+    )
+    confirm_password = serializers.CharField(
+        style={'input_type': 'password'},
+        write_only = True,
     )
     date_joined = serializers.DateTimeField(read_only=True)
     last_login = serializers.DateTimeField(read_only=True)
@@ -52,11 +57,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'email': {'required': True},
             'username': {'required': True},
         }
-        fields = ('first_name', 'last_name', 'email', 'password', 'last_login', 'date_joined', 'username', 'url')
-
-    # def validate_password(self, value):
-    #     user = self.context['request'].user
-    #     validate_password(password=value, user=user)
+        fields = ('first_name', 'last_name', 'email', 'password', 'confirm_password', 'last_login', 'date_joined', 'username', 'url')
 
     def create(self, validated_data):
         user = User(
@@ -68,7 +69,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         username = validated_data['username']
         email = validated_data['email']
         password = validated_data['password']
-        if len(password) < 8:
+        confirm_password = validated_data['confirm_password']
+        if (password != confirm_password):
+            raise ValidationError({'no_match_password': 'Passwords do not match.'})
+        elif len(password) < 8:
             raise ValidationError({'short_password': 'Password too short. Password should be at least 8 characters long.'})
         elif bool(re.match('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])', password)) == False:
             raise ValidationError({'weak_password': 'Password should contain numbers and at least one uppercase and at least one lowercase letter.'})
@@ -94,7 +98,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 class StaffSerializer(serializers.HyperlinkedModelSerializer):
     password = serializers.CharField(
-        style={'input_type': 'password'}
+        style={'input_type': 'password'},
+        write_only = True,
+    )
+    confirm_password = serializers.CharField(
+        style={'input_type': 'password'},
+        write_only = True,
     )
     date_joined = serializers.DateTimeField(read_only=True)
     last_login = serializers.DateTimeField(read_only=True)
@@ -109,7 +118,7 @@ class StaffSerializer(serializers.HyperlinkedModelSerializer):
             'username': {'required': True},
             'is_staff': {'required': True},
         }
-        fields = ('first_name', 'last_name', 'email', 'password', 'last_login', 'date_joined', 'username', 'is_staff', 'url')
+        fields = ('first_name', 'last_name', 'email', 'password', 'confirm_password', 'last_login', 'date_joined', 'username', 'is_staff', 'url')
     def create(self, validated_data):
         user = User(
             email = validated_data['email'],
@@ -120,8 +129,11 @@ class StaffSerializer(serializers.HyperlinkedModelSerializer):
         )
         email = validated_data['email']
         password = validated_data['password']
+        confirm_password = validated_data['confirm_password']
         username = validated_data['username']
-        if len(password) < 8:
+        if (password != confirm_password):
+            raise ValidationError({'no_match_password': 'Passwords do not match.'})
+        elif len(password) < 8:
             raise ValidationError({'short_password': 'Password too short. Password should be at least 8 characters long.'})
         elif bool(re.match('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])', password)) == False:
             raise ValidationError({'weak_password': 'Password should contain numbers and at least one uppercase and at least one lowercase letter.'})
@@ -136,7 +148,12 @@ class StaffSerializer(serializers.HyperlinkedModelSerializer):
 
 class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
     password = serializers.CharField(
-        style={'input_type': 'password'}
+        style={'input_type': 'password'},
+        write_only = True,
+    )
+    confirm_password = serializers.CharField(
+        style={'input_type': 'password'},
+        write_only = True,
     )
     date_joined = serializers.DateTimeField(read_only=True)
     last_login = serializers.DateTimeField(read_only=True)
@@ -144,6 +161,7 @@ class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         extra_kwargs = {
             'password': {'write_only': True},
+            'confirm_password': {'write_only': True},
             'url': {'view_name': 'superstaff-detail'},
             'first_name': {'required': True},
             'last_name': {'required': True},
@@ -163,9 +181,12 @@ class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
             is_superuser = validated_data['is_superuser'],
         )
         password = validated_data['password']
+        confirm_password = validated_data['confirm_password']
         email = validated_data['email']
         username = validated_data['username']
-        if len(password) < 8:
+        if (password != confirm_password):
+            raise ValidationError({'no_match_password': 'Passwords do not match.'})
+        elif len(password) < 8:
             raise ValidationError({'short_password': 'Password should contain numbers and at least one uppercase and at least one lowercase letter.'})
         elif bool(re.match('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])', password)) == False:
             raise ValidationError({'weak_password': 'Password should contain numbers and letters.'})
