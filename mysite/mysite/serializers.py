@@ -170,7 +170,7 @@ class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
             'is_superuser': {'required': True},
             'is_staff': {'required': True},
         }
-        fields = ('first_name', 'last_name', 'email', 'password', 'last_login', 'date_joined', 'username', 'is_staff', 'is_superuser', 'url')
+        fields = ('first_name', 'last_name', 'email', 'password', 'confirm_password', 'last_login', 'date_joined', 'username', 'is_staff', 'is_superuser', 'url')
     def create(self, validated_data):
         user = User(
             first_name = validated_data['first_name'],
