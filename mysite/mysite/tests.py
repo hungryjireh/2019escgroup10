@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 import http.client
 import requests
 import unittest
-
+# factory = APIRequestFactory(enforce_csrf_checks=True)
 class CheckUserViewTest(APITestCase):
 
     #testing user login
@@ -207,6 +207,21 @@ class CheckTicketViewTest(APITestCase):
         response = self.client.get('/tickets/')
         self.assertEqual(response.status_code, 200)
 
+    #checks for invalid char fields
+    def test_2(self):
+        self.username = 'john_doe'
+        self.password = 'foobar'
+        self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post('/tickets/', {'issue_description': 'Foo Bar', 'priority': 'abcd', 'categories': '1234'}, format='json')
+        self.assertEqual(response.status_code, 400)
+    def test_email_notif(self):
+        
+
+
+        
+
 class CheckJWTToken(APITestCase):
     def test_1(self):
         self.username = 'john_doe'
@@ -215,6 +230,7 @@ class CheckJWTToken(APITestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
         response = self.client.post('/api/token', {'username': self.username, 'password': self.password}, format='json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 301)
+
 
     
