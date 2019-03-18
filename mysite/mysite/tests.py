@@ -21,6 +21,7 @@ class CheckUserViewTest(APITestCase):
         data = {
             'username':'username',
             'password':'password',
+            'confirm_password': 'password',
             'first_name': 'user',
             'last_name': 'tan',
             'email': 'hello@hello.com',
@@ -33,6 +34,7 @@ class CheckUserViewTest(APITestCase):
         data = {
             'username':'username',
             'password':'password',
+            'confirm_password': 'password',
             'first_name': 'user',
             'last_name': 'tan',
             'email': 'hello@hello.com',
@@ -46,6 +48,7 @@ class CheckUserViewTest(APITestCase):
         data = {
             'username':'username',
             'password':'password',
+            'confirm_password': 'password',
             'first_name': 'user',
             'last_name': 'tan',
             'email': 'hello@hello.com',
@@ -83,6 +86,7 @@ class CheckUserViewTest(APITestCase):
         data = {
             'username':'username',
             'password':'password',
+            'confirm_password': 'password',
             'first_name': 'user',
             'last_name': 'tan',
             'email': 'hello@hello.com',
@@ -203,5 +207,14 @@ class CheckTicketViewTest(APITestCase):
         response = self.client.get('/tickets/')
         self.assertEqual(response.status_code, 200)
 
+class CheckJWTToken(APITestCase):
+    def test_1(self):
+        self.username = 'john_doe'
+        self.password = 'foobar'
+        self.user = User.objects.create(username=self.username, password=self.password)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post('/api/token', {'username': self.username, 'password': self.password}, format='json')
+        self.assertEqual(response.status_code, 200)
 
     
