@@ -37,7 +37,7 @@ router.register(r'userreply', views.UserReplyViewSet, base_name='userreply')
 urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/token/$', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     url(r'^api/token/refresh/$', TokenRefreshView.as_view(), name='token_refresh'),
 ]

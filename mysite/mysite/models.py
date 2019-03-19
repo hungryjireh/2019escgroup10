@@ -50,3 +50,17 @@ class Message(models.Model):
     issue_description=models.TextField(max_length=400)
     priority = models.CharField(max_length=1, choices=PRIORITY)
     resolved = models.CharField(max_length=3, choices=BINARY, default='no')
+    def __str__(self):
+        return "Date: " + str(self.created) + ", Created by: " + str(self.user.username) + ", Description: " + str(self.issue_description)
+
+class AdminReply(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    issue_description=models.TextField(max_length=400)
+    message_link = models.ForeignKey(Message, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
+
+class UserReply(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    issue_description=models.TextField(max_length=400)
+    message_link = models.ForeignKey(AdminReply, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
