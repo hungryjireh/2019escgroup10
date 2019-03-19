@@ -29,6 +29,8 @@ router.register(r'tickets', views.MessageViewSet)
 router.register(r'users', views.UserViewSet, base_name='user')
 router.register(r'staff', views.StaffViewSet, base_name='staff')
 router.register(r'superstaff', views.SuperStaffViewSet, base_name='superstaff')
+router.register(r'adminreply', views.AdminReplyViewSet, base_name='adminreply')
+router.register(r'userreply', views.UserReplyViewSet, base_name='userreply')
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
