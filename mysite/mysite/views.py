@@ -120,7 +120,7 @@ class AdminReplyViewSet(viewsets.ModelViewSet):
     serializer_class = AdminReplySerializer
     permission_classes = (IsAdminUser,)
     filter_backends = (filters.OrderingFilter,)
-    ordering_fields = ('created')
+    ordering_fields = ('message_link', 'user_reply_link', 'created', 'resolved')
 
     queryset = AdminReply.objects.all()
 
@@ -142,7 +142,7 @@ class UserReplyViewSet(viewsets.ModelViewSet):
     serializer_class = UserReplySerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = (filters.OrderingFilter,)
-    ordering_fields = ('created')
+    ordering_fields = ('admin_reply_link', 'created')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

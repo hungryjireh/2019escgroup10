@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'mysite.apps.MySiteConfig',
     'corsheaders',
 ]
+
 SITE_ID = 1
 
 MIDDLEWARE = [

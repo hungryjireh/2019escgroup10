@@ -202,13 +202,15 @@ class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
 class AdminReplySerializer(serializers.HyperlinkedModelSerializer):
     created = serializers.DateTimeField(read_only=True)
     user = serializers.ReadOnlyField(source='user.username')
+    resolved = serializers.ReadOnlyField(source='message_link.resolved')
     class Meta:
         model = AdminReply
-        fields = ('created', 'message_link', 'issue_description', 'url', 'user')
+        fields = ('created', 'message_link', 'user_reply_link', 'issue_description', 'url', 'user', 'resolved')
 
 class UserReplySerializer(serializers.HyperlinkedModelSerializer):
     created = serializers.DateTimeField(read_only=True)
     user = serializers.ReadOnlyField(source='user.username')
+    resolved = serializers.ReadOnlyField(source='resolved.resolved')
     class Meta:
         model = UserReply
-        fields = ('created', 'message_link', 'issue_description', 'url', 'user')
+        fields = ('created', 'admin_reply_link', 'issue_description', 'url', 'user', 'resolved')
