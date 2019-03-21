@@ -1,0 +1,29 @@
+.ticketlistitem-list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 7fr 2.5fr 3fr 4.5fr 3fr;
+}
+
+.ticketlistitem {
+  font-size: 14px;
+  padding: 20px 40px;
+  border-bottom: 1px solid hsl(210, 36%, 96%);
+  color: #262626;
+}
+
+.ticketlistitem:hover {
+  background-color: hsl(210, 36%, 97%);
+  cursor: pointer;
+}
+
+.ticketlistitem-unviewed {
+  font-size: 14px;
+  padding: 20px 40px;
+  border-bottom: 1px solid hsl(210, 36%, 96%);
+  background-color: #fee29a;
+}
+
+.ticketlistitem-unviewed:hover {
+  background-color: #fdd368;
+  cursor: pointer;
+}

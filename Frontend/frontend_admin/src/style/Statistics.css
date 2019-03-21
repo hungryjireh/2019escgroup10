@@ -1,0 +1,57 @@
+/* !NOTE:
+SUCCESSFULLY REFACTORED!
+NO LONGER NEEDED!
+STYLED-COMPONENTS!
+*/
+
+.stats {
+    width: calc(100vw - 80px);
+    height: 180px;
+    /* border: 2px solid blue; */
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-bottom: 40px;
+    background-color: hsl(209, 36%, 50%);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+    padding: 24px;
+}
+
+.stats-status {
+    display: inline-block;
+    border-right: 0.5px solid #BCCCDC;
+    margin-left: 16px;
+}
+
+.stats-satisfaction {
+    display: inline-block;
+}
+
+.stats-status-header {
+    color: #B3ECFF;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.stats-status-list > li > div:last-child {
+    color: #B3ECFF;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.stats-status-list {
+    display: flex;
+    color: white;
+}
+
+.stats-status-list > li {
+    margin-right: 50px;
+    /* width: 120px; */
+}
+
+.stats-status-list > li > div:first-child {
+    margin-left: -2px;
+    font-size: 52px;
+    margin-bottom: 16px;
+}
