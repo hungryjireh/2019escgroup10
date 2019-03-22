@@ -217,9 +217,27 @@ class CheckTicketViewTest(APITestCase):
         response = self.client.post('/tickets/', {'issue_description': 'Foo Bar', 'priority': 'abcd', 'categories': '1234'}, format='json')
         self.assertEqual(response.status_code, 400)
     # def test_email_notif(self):
-        
 
 
+    def test_email_notif(self):
+        data = {
+            'username':'username',
+            'password':'password123',
+            'confirm_password': 'password123',
+            'first_name': 'user',
+            'last_name': 'tan',
+            'email': 'pker96@gmail.com',
+        }
+        serializer = UserSerializer(data=data)
+        self.assertTrue(serializer.email_sent)
+
+#creating message in database
+class database_testing(TestCase):
+    def message_creation(self):
+        Message.objects.create(categories='API DevOps', issue_description='Test case', priority='1', resolved='no')
+        testmessage=Message.objects.get('API DevOps')
+        assertEqual(testmessage.issue_description(), 'Test case')
+    
         
 class CheckJWTToken(APITestCase):
     def test_1(self):

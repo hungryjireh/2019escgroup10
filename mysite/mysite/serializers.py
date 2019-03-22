@@ -37,6 +37,7 @@ class MessageSerializer(serializers.HyperlinkedModelSerializer):
         return message
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    email_sent=True
     password = serializers.CharField(
         style={'input_type': 'password'},
         write_only = True,
@@ -60,6 +61,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('first_name', 'last_name', 'email', 'password', 'confirm_password', 'last_login', 'date_joined', 'username', 'url')
 
     def create(self, validated_data):
+
         user = User(
             email = validated_data['email'],
             first_name = validated_data['first_name'],
@@ -92,7 +94,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             text_content = "Your CPU cannot process HTML?!"
             msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
             msg.attach_alternative(html_content, "text/html")
-            msg.send()
+            if(msg.send()):
+                pass
+            else:
+                email_sent=False
             return user
         
 
