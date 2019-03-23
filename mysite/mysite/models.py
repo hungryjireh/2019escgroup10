@@ -59,7 +59,7 @@ class AdminReply(models.Model):
     message_link = models.ForeignKey(Message, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
     def __str__(self):
-        return "Date: " + str(self.created)  + ", Description: " + str(self.admin_reply) + ", Message: <"+str(self.message_link)+">" 
+        return "Date: " + str(self.created)  + ", Description: " + str(self.admin_reply)
 
 class UserReply(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -67,4 +67,4 @@ class UserReply(models.Model):
     message_link = models.ForeignKey(AdminReply, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
     def __str__(self):
-        return "Date: " + str(self.created)  + ", Description: " + str(self.user_reply) + ", Message: <"+str(self.message_link)+">"
+        return "Date: " + str(self.created)  + ", Description: " + str(self.user_reply)

@@ -13,7 +13,6 @@ from mysite.permissions import IsSuperUser
 from django.core.exceptions import ValidationError
 import re
 from django.views.decorators.cache import cache_control
-# from .prevention import MessagePostRequestThrottle
 from rest_framework.views import APIView
 from rest_framework.throttling import UserRateThrottle
 

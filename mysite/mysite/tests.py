@@ -98,7 +98,7 @@ class CheckUserViewTest(APITestCase):
         serializer = SuperStaffSerializer(data=data)
         self.assertFalse(serializer.is_valid())
     #8
-    #cannot view user database as no adminuser privileges
+    #cannot view user database as no superuser privileges
     def test_redirect_user_to_view_user(self):
         self.username = 'john_doe'
         self.password = 'foobar'
@@ -108,7 +108,7 @@ class CheckUserViewTest(APITestCase):
         response = self.client.get('/users/')
         self.assertEqual(response.status_code, 403)
     #9
-    #cannot view staff database as no adminuser privileges
+    #cannot view staff database as no superuser privileges
     def test_redirect_user_to_staff_page(self):
         self.username = 'john_doe'
         self.password = 'foobar'
@@ -118,7 +118,7 @@ class CheckUserViewTest(APITestCase):
         response = self.client.get('/staff/')
         self.assertEqual(response.status_code, 403)
     #10
-    #cannot view superstaff database as no adminuser privileges
+    #cannot view superstaff database as no staff privileges
     def test_redirect_user_to_admin_page(self):
         self.username = 'john_doe'
         self.password = 'foobar'
@@ -128,7 +128,7 @@ class CheckUserViewTest(APITestCase):
         response = self.client.get('/superstaff/')
         self.assertEqual(response.status_code, 403)
     #11
-    #can view user database as user has adminuser privileges
+    #can view user database as user has staff privileges
     def test_redirect_admin_to_view_users(self):
         self.username = 'john_doe'
         self.password = 'foobar'
@@ -160,7 +160,7 @@ class CheckUserViewTest(APITestCase):
         
 class CheckTicketViewTest(APITestCase):
     #1
-    #successfully create a ticket
+    #successfully create a ticket with staff privileges 
     def test_ticket(self):
         self.username = 'john_doe'
         self.password = 'foobar'
@@ -231,7 +231,27 @@ class CheckTicketViewTest(APITestCase):
             'email': 'pker96@gmail.com',
         }
         serializer = UserSerializer(data=data)
-        self.assertTrue(serializer.email_sent)
+        self.assertTrue(serializer.email_sent)  
+    #9
+    def test_staff_view_user_reply(self):
+        self.username = 'hello'
+        self.password = 'helloworld'
+        self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get('/userreply/')
+        self.assertEqual(response.status_code, 200)
+
+    #10
+    def test_staff_view_admin_reply(self):
+        self.username = 'hello'
+        self.password = 'helloworld'
+        self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get('/adminreply/')
+        self.assertEqual(response.status_code, 200)
+
 
 #creating message in database
 class database_testing(TestCase):
@@ -253,10 +273,10 @@ class database_testing(TestCase):
     #4
     def test_tostring(self):
         message=Message.objects.create(categories='Aesop', issue_description='bad vibes', priority='1', resolved='no')
-        self.assertEqual('Aesop', message.categories)
-        self.assertEqual('bad vibes', message.issue_description)
-        self.assertEqual('1', message.priority)
-        self.assertEqual('no', message.resolved)
+        self.assertEqual(str(message.categories), message.categories)
+        self.assertEqual(str(message.issue_description), message.issue_description)
+        self.assertEqual(str(message.priority), message.priority)
+        self.assertEqual(str(message.resolved), message.resolved)
 
     #5
     def test_admin_reply(self):
@@ -268,21 +288,14 @@ class database_testing(TestCase):
         Message.objects.get(categories='Smart Restaurant').resolved='yes'
         self.assertEqual(admin.admin_reply, 'resolved')
         self.assertEqual(updated_message.resolved, 'yes')
-    #6
-    def test_empty_fields_test_message_creation(self):
-        admin=AdminReply.objects.create(admin_reply='helloworld')
-        self.assertRaises(ValidationError, admin.full_clean)
 
-    #7
-    def test_tostring2(self):
+    #6
+    def test_tostring_admin_reply(self):
         message=Message.objects.create(categories='Aesop', issue_description='bad vibes', priority='1', resolved='no')
         admin=AdminReply.objects.create(admin_reply='helloworld', message_link=message)
-        self.assertEqual('Aesop', message.categories)
-        self.assertEqual('bad vibes', message.issue_description)
-        self.assertEqual('1', message.priority)
-        self.assertEqual('no', message.resolved)
+        self.assertEqual(str(admin.admin_reply), admin.admin_reply)
 
-    #8
+    #7
     def test_user_reply(self):
         message=Message.objects.create(categories='AI Translator', issue_description='bad translator', priority='1', resolved='no')
         admin=AdminReply.objects.create(admin_reply='Issue resolved', message_link=message)
@@ -292,9 +305,13 @@ class database_testing(TestCase):
         userreply=UserReply.objects.create(user_reply='Thanks for the resolution', message_link=admin)
         self.assertEqual('Thanks for the resolution', userreply.user_reply)
         self.assertEqual('yes',updated_message.resolved)
+    #8
+    def test_tostring_userreply(self):
+        message=Message.objects.create(categories='Aesop', issue_description='bad vibes', priority='1', resolved='no')
+        admin=AdminReply.objects.create(admin_reply='helloworld', message_link=message)
+        userreply=UserReply.objects.create(user_reply='Thanks for the resolution', message_link=admin)
+        self.assertEqual(str(userreply.user_reply), userreply.user_reply)
 
-
-        
 class CheckJWTToken(APITestCase):
     #1
     def test_1(self):
