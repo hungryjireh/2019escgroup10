@@ -31,11 +31,11 @@ CATEGORIES = (
 )
 
 PRIORITY = (
-    ('1', '1'),
-    ('2', '2'),
-    ('3', '3'),
-    ('4', '4'),
-    ('5', '5'),
+    ('1', 1),
+    ('2', 2),
+    ('3', 3),
+    ('4', 4),
+    ('5', 5),
 )
 
 BINARY = (
@@ -48,19 +48,23 @@ class Message(models.Model):
     categories = models.CharField(max_length=20, choices=CATEGORIES)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
     issue_description=models.TextField(max_length=400)
-    priority = models.CharField(max_length=1, choices=PRIORITY)
+    priority = models.IntegerField(choices=PRIORITY)
     resolved = models.CharField(max_length=3, choices=BINARY, default='no')
     def __str__(self):
-        return "Date: " + str(self.created) + ", Created by: " + str(self.user.username) + ", Description: " + str(self.issue_description)
+        return "Date: " + str(self.created)  + ", Description: " + str(self.issue_description) + ", Priority: "+str(self.priority) + ", Resolved: "+str(self.resolved)
 
 class AdminReply(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    issue_description=models.TextField(max_length=400)
+    admin_reply=models.TextField(max_length=400)  
     message_link = models.ForeignKey(Message, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
+    def __str__(self):
+        return "Date: " + str(self.created)  + ", Description: " + str(self.admin_reply) + ", Message: <"+str(self.message_link)+">" 
 
 class UserReply(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    issue_description=models.TextField(max_length=400)
+    user_reply=models.TextField(max_length=400)
     message_link = models.ForeignKey(AdminReply, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
+    def __str__(self):
+        return "Date: " + str(self.created)  + ", Description: " + str(self.user_reply) + ", Message: <"+str(self.message_link)+">"

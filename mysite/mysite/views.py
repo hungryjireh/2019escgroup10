@@ -3,7 +3,7 @@ from mysite import views
 from mysite.serializers import UserSerializer, StaffSerializer, SuperStaffSerializer, MessageSerializer, AdminReplySerializer, UserReplySerializer
 from django.contrib.auth.models import User
 from rest_framework import generics, permissions, renderers, viewsets, status, filters
-from rest_framework.decorators import api_view, action
+# from rest_framework.decorators import api_view, actions
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from django.contrib.auth.hashers import make_password, check_password
@@ -13,10 +13,14 @@ from mysite.permissions import IsSuperUser
 from django.core.exceptions import ValidationError
 import re
 from django.views.decorators.cache import cache_control
+# from .prevention import MessagePostRequestThrottle
+from rest_framework.views import APIView
+from rest_framework.throttling import UserRateThrottle
 
 # Create your views here.
 
 class MessageViewSet(viewsets.ModelViewSet):
+    
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
     `update` and `destroy` actions.
@@ -32,6 +36,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+
     def get_queryset(self):
         """
         This view should return a list of all the purchases
@@ -41,8 +46,7 @@ class MessageViewSet(viewsets.ModelViewSet):
         if (self.request.user.is_staff or self.request.user.is_superuser):
             return Message.objects.all()
         else:
-            return Message.objects.filter(user=user)            
-
+            return Message.objects.filter(user=user)
 class UserViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list` and `detail` actions.
@@ -83,6 +87,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 class StaffViewSet(viewsets.ModelViewSet):
+    
     """
     This viewset automatically provides `list` and `detail` actions.
     """

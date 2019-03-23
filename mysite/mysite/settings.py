@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = '=$#3j7h=$c1#onxkoqdv84zby&zw=#(eyj4g=<0@></0@><vq9szd22></vq9szd22>'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -143,7 +143,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer'
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 100,
 }
 
 ANYMAIL = {
