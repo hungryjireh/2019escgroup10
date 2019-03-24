@@ -57,6 +57,7 @@ class AdminReply(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     admin_reply=models.TextField(max_length=400)  
     message_link = models.ForeignKey(Message, on_delete=models.CASCADE, null=True)
+    user_reply_link = models.ForeignKey('UserReply', on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
     def __str__(self):
         return "Date: " + str(self.created)  + ", Description: " + str(self.admin_reply)
