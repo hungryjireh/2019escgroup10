@@ -1,6 +1,6 @@
 import sys
 import json
-# from mysite.models import Message
+from .models import Message
 import os.path
 try:
     import apiai
@@ -24,7 +24,9 @@ class Speech():
         self.check = ''
         self.categories = ''
         self.issue_description = ''
-        self.priority = ''
+        self.priority = '1'
+        self.resolved = "no"
+        self.ticket = []
         # self.message_create = Message
 
 
@@ -107,7 +109,11 @@ class Speech():
             # Message.objects.create(categories=self.categories, issue_description=self.issue_description, priority='1', resolved='no')
             print("Your ticket has been created successfully!")
         # if intent == "query_ticket":
-        #
+
+    def getTicket(self):
+        self.ticket = [self.categories,self.issue_description,self.priority,self.resolved]
+        return self.ticket
+
 
     def common_talk(self):
         words = self.listen()
@@ -115,7 +121,7 @@ class Speech():
         return self.common_talk()
 
 
-while(1):
-    test = Speech()
-    say("Welcome to our API Service Page! I'm an intelegent robot who can help you handle issues. How can I help you?")
-    test.common_talk()
+# while(1):
+#     test = Speech()
+#     say("Welcome to our API Service Page! I'm an intelegent robot who can help you handle issues. How can I help you?")
+#     test.common_talk()
