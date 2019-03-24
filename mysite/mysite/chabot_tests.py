@@ -7,7 +7,7 @@ from .models import Message
 from django.core.exceptions import ValidationError
 from .chatbot import Speech
 
-CLIENT_ACCESS_TOKEN = 'd478a3e3bc084f3fb43136cdf3f7de3d'
+CLIENT_ACCESS_TOKEN = ''
 
 
 class ConversationTests(unittest.TestCase):

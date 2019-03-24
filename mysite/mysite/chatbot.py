@@ -9,7 +9,7 @@ except ImportError:
         os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
     )
 
-CLIENT_ACCESS_TOKEN = 'd478a3e3bc084f3fb43136cdf3f7de3d'
+CLIENT_ACCESS_TOKEN = ''
 ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
 def say(words):
