@@ -8,6 +8,9 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 import http.client
 import requests
+from PIL import Image
+import os
+import io
 import unittest
 from .models import Message, AdminReply, UserReply
 from django.test import TestCase
@@ -251,6 +254,36 @@ class CheckTicketViewTest(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.get('/adminreply/')
         self.assertEqual(response.status_code, 200)
+
+        
+    #11
+    def test_file_upload_correct_ext(self):
+        self.username = 'hello'
+        self.password = 'helloworld'
+        self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        file = io.BytesIO()
+        image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
+        image.save(file, 'png')
+        file.name = 'test.png'
+        file.seek(0)
+        response = self.client.post('/tickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'api_devops', 'document':file})
+        self.assertEqual(response.status_code, 201)
+    #12
+    def test_file_upload_incorrect_ext(self):
+        self.username = 'hello'
+        self.password = 'helloworld'
+        self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        file = io.BytesIO()
+        image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
+        image.save(file, 'png')
+        file.name = 'test.php'
+        file.seek(0)
+        response = self.client.post('/tickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'api_devops', 'document':file})
+        self.assertEqual(response.status_code, 400)
 
 
 #creating message in database

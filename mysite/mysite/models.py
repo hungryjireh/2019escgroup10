@@ -1,4 +1,5 @@
 from django.db import models
+from .validators import validate_extension
 
 # Create your models here.
 
@@ -49,6 +50,8 @@ class Message(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
     issue_description=models.TextField(max_length=400)
     priority = models.IntegerField(choices=PRIORITY)
+    #added filefield for uploads. Uploads will be to MEDIA_ROOT/testfolder. Validate for file type
+    document = models.FileField(upload_to='testfolder',null=True, validators=[validate_extension])
     resolved = models.CharField(max_length=3, choices=BINARY, default='no')
     def __str__(self):
         return "Date: " + str(self.created)  + ", Description: " + str(self.issue_description) + ", Priority: "+str(self.priority) + ", Resolved: "+str(self.resolved)

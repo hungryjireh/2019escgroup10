@@ -3,7 +3,6 @@ from mysite import views
 from mysite.serializers import UserSerializer, StaffSerializer, SuperStaffSerializer, MessageSerializer, AdminReplySerializer, UserReplySerializer
 from django.contrib.auth.models import User
 from rest_framework import generics, permissions, renderers, viewsets, status, filters
-# from rest_framework.decorators import api_view, actions
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from django.contrib.auth.hashers import make_password, check_password
@@ -11,7 +10,7 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from mysite.permissions import IsSuperUser
 from django.core.exceptions import ValidationError
-import re
+from rest_framework.parsers import FileUploadParser
 from django.views.decorators.cache import cache_control
 from rest_framework.views import APIView
 from rest_framework.throttling import UserRateThrottle
@@ -19,7 +18,6 @@ from rest_framework.throttling import UserRateThrottle
 # Create your views here.
 
 class MessageViewSet(viewsets.ModelViewSet):
-    
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
     `update` and `destroy` actions.
@@ -33,7 +31,8 @@ class MessageViewSet(viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        #get the file uploaded and pass it to the model field
+        serializer.save(user=self.request.user, document=self.request.data.get('document'))
 
 
     def get_queryset(self):

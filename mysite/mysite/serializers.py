@@ -6,20 +6,20 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.auth import password_validation as validators
 from django.core.exceptions import ValidationError
-import re
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     created = serializers.DateTimeField(read_only=True)
     class Meta:
         model = Message
-        fields = ('created', 'priority', 'categories', 'issue_description', 'user', 'url', 'resolved')
+        fields = ('created', 'priority', 'categories', 'document','issue_description', 'user', 'url', 'resolved')
     
     def create(self, validated_data):
         message = Message(
             priority = validated_data['priority'],
             categories = validated_data['categories'],
             issue_description = validated_data['issue_description'],
+            document=validated_data['document'],
             user = validated_data['user'],
         )
         message.save()
