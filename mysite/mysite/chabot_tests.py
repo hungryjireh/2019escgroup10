@@ -21,6 +21,8 @@ class ConversationTests(unittest.TestCase):
         response = text_requset.getresponse()
         return json.loads(response.read().decode())
 
+    #1
+    #Testing creating new tickets with pre-trained sentence
     def test_start_ticket(self):
         query = 'I wanna submit a ticket'
         response = self.load_text_request_with_quiery(query)
@@ -30,6 +32,8 @@ class ConversationTests(unittest.TestCase):
         self.assertEqual(result['fulfillment']['speech'],
                          'Sure! Which API you wanna ask about? (Drop down a list to click)')
 
+    #2
+    #Testing ticekt generating in conversation
     def test_confirm_ticket(self):
         query = 'No,thank you'
         response = self.load_text_request_with_quiery(query)
@@ -39,6 +43,8 @@ class ConversationTests(unittest.TestCase):
         self.assertEqual(result['fulfillment']['speech'],
                          "It's my pleasure to help you!")
 
+    #3
+    #Testing simple common talk question like asking for the name
     def test_you_name(self):
         query = 'What is your name?'
         response = self.load_text_request_with_quiery(query)
@@ -68,6 +74,7 @@ class ConversationTests(unittest.TestCase):
 
         self.assertTrue(len(hello_without_context['result']['contexts']) == 0)
 
+    #4 Testing indentifying API Categories entity defined and corresponding response
     def test_user_entities(self):
         query = 'Chatbot API'
         entities = [
