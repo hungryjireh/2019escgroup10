@@ -7,7 +7,9 @@ pip install djangorestframework
 pip install djangorestframework_simplejwt
 pip install django-anymail[sendgrid]
 pip install django-filter
-pip install django-cors-headers
+pip install django-cors-
+pip install apiai
+pip install json
 ```
 
 Attempt running:

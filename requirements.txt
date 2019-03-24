@@ -1,0 +1,6 @@
+djangorestframework
+djangorestframework_simplejwt
+django-anymail[sendgrid]
+django-filter
+django-cors-headers
+apiai
