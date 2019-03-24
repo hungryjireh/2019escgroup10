@@ -104,7 +104,7 @@ class Speech():
         if intent == 'ticket_problem':
             self.issue_description = words
         if intent == 'ticket_confirm':
-            Message.objects.create(categories=self.categories, issue_description=self.issue_description, priority='1', resolved='no')
+            # Message.objects.create(categories=self.categories, issue_description=self.issue_description, priority='1', resolved='no')
             print("Your ticket has been created successfully!")
         # if intent == "query_ticket":
         #
