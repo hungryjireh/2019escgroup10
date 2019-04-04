@@ -1,0 +1,59 @@
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes screen-darken {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.4;
+  }
+}
+
+@keyframes screen-lighten {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.slide-in-animation {
+  animation-duration: 0.4s;
+  animation-name: slide-in;
+  animation-iteration-count: 1;
+}
+
+.slide-out-animation {
+  animation-duration: 0.4s;
+  animation-name: slide-out;
+  animation-iteration-count: 1;
+}
+
+.darken-animation {
+  animation-duration: 0.4s;
+  animation-name: screen-darken;
+  animation-iteration-count: 1;
+}
+
+.lighten-animation {
+  animation-duration: 0.4s;
+  animation-name: screen-lighten;
+  animation-iteration-count: 1;
+}
