@@ -15,6 +15,18 @@ or install by
 pip install -r requirements.txt
 ```
 
+Dependencies for React:
+```
+npm-install-all
+npm -i axios
+npm -i firebase
+
+Windows:
+npm install -all
+npm i axios
+npm i firebase
+```
+
 Attempt running:
 ```
 python manage.py makemigrations
