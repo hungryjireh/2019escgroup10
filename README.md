@@ -16,7 +16,11 @@ pip install -r requirements.txt
 ```
 
 Dependencies for React:
+**ENSURE THAT ALL OTHER INSTANCES OF ESLINT ARE REMOVED OR CONFLICTS WILL HAPPEN**
 ```
+cd /path/to/file/2019escgroup10/Frontend/frontend-admin
+
+Mac and Linux:
 npm-install-all
 npm -i axios
 npm -i firebase
