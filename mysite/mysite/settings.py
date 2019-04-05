@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=$#3j7h=$c1#onxkoqdv84zby&zw=#(eyj4g=<0@></0@><vq9szd22></vq9szd22>'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -152,16 +152,13 @@ REST_FRAMEWORK = {
 }
 
 ANYMAIL = {
-    # "SENDGRID_API_KEY": "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",
-    "SENDGRID_API_KEY": "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",
+    "SENDGRID_API_KEY": "",
 }
 
 EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
 EMAIL_HOST = 'smtp.sendgrid.net'
-# EMAIL_HOST_USER = 'acnapisutd'
-# EMAIL_HOST_PASSWORD = 'Happyhappy96'
-EMAIL_HOST_USER = 'chiseng'
-EMAIL_HOST_PASSWORD = 'chiseng96'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
