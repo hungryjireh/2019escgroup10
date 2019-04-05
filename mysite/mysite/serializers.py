@@ -1,11 +1,54 @@
 from rest_framework import serializers
-from mysite.models import Message, AdminReply, UserReply
+from mysite.models import Message, AdminReply, UserReply, ReactMessage
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.auth import password_validation as validators
 from django.core.exceptions import ValidationError
+
+class ReactMessageSerializer(serializers.HyperlinkedModelSerializer):
+    last_updated = serializers.DateTimeField(read_only=True)
+    submit_time = serializers.DateTimeField(read_only=True)
+    class Meta:
+        model = ReactMessage
+        ordering = ['-last_updated']
+        fields = ('requester', 'subject', 'status', 'group', 'last_updated', 'id', 'phone', 'email', 'submit_time', 'content')
+
+    def create(self, validated_data):
+        message = ReactMessage(
+            requester = validated_data['requester'],
+            subject = validated_data['subject'],
+            status = validated_data['status'],
+            group = validated_data['group'],
+            phone = validated_data['phone'],
+            email = validated_data['email'],
+            content = validated_data['content'],
+            # document = validated_data['document'],
+        )
+        requester = validated_data['requester']
+        group = validated_data['group']
+        status = validated_data['status']
+        subject = validated_data['subject']
+        message.save()
+        subject, from_email, to = 'New Ticket Submitted! Here are the details', 'ACNAPI-SUTD <hello@acnapi.icu>', 'hungryjireh@gmail.com'
+        html_content = render_to_string("react_email_template.html", {
+            "requester": validated_data['requester'],
+            "subject": validated_data['subject'],
+            "status": validated_data['status'],
+            "group": validated_data['group'],
+            "phone": validated_data['phone'],
+            "email": validated_data['email'],
+            "content": validated_data['content'],
+        })
+        text_content = "Your CPU cannot process HTML?!"
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+        msg.attach_alternative(html_content, "text/html")
+        if(msg.send()):
+            email_sent=True
+        else:
+            email_sent=False
+        return message
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')

@@ -31,6 +31,7 @@ router.register(r'staff', views.StaffViewSet, base_name='staff')
 router.register(r'superstaff', views.SuperStaffViewSet, base_name='superstaff')
 router.register(r'adminreply', views.AdminReplyViewSet, base_name='adminreply')
 router.register(r'userreply', views.UserReplyViewSet, base_name='userreply')
+router.register(r'reacttickets', views.ReactMessageViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -40,4 +41,6 @@ urlpatterns = [
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/token/$', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     url(r'^api/token/refresh/$', TokenRefreshView.as_view(), name='token_refresh'),
+    url(r'^api/tickets/$', views.message_list),
+    url(r'^api/customers/(?P<pk>[0-9]+)$', views.message_detail),
 ]

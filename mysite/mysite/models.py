@@ -71,3 +71,15 @@ class UserReply(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
     def __str__(self):
         return "Date: " + str(self.created)  + ", Description: " + str(self.user_reply)
+
+class ReactMessage(models.Model):
+    requester = models.CharField(max_length=20)
+    subject = models.CharField(max_length=50)
+    status = models.CharField(max_length=20)
+    group = models.CharField(max_length=50)
+    last_updated = models.DateTimeField(auto_now_add=True)
+    email = models.EmailField(max_length=50, null=True)
+    phone = models.CharField(max_length=20, null=True)
+    submit_time = models.DateTimeField(auto_now_add=True, null=True)
+    content = models.TextField(max_length=5000, null=True)
+    # document = models.FileField(upload_to='testfolder',null=True, blank=True, validators=[validate_extension])
