@@ -152,18 +152,23 @@ REST_FRAMEWORK = {
 }
 
 ANYMAIL = {
-    "SENDGRID_API_KEY": "",
+    # "SENDGRID_API_KEY": "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",
+    "SENDGRID_API_KEY": "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",
 }
 
 EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+# EMAIL_HOST_USER = 'acnapisutd'
+# EMAIL_HOST_PASSWORD = 'Happyhappy96'
+EMAIL_HOST_USER = 'chiseng'
+EMAIL_HOST_PASSWORD = 'chiseng96'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = 'ACNAPI-SUTD <hello@acnapi.icu>'
 
+CORS_ORIGIN_ALLOW_ALL = False
+
 CORS_ORIGIN_WHITELIST = (
-    'localhost:8000',
+    'localhost:3000',
 )

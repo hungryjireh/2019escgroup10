@@ -13,3 +13,4 @@ Frontend/frontend_admin/.DS_Store
 Frontend/frontend_client/.DS_Store
 Frontend/frontend_client/website/.DS_Store
 mysite/.DS_Store
+mysite/mysite/settings.py
