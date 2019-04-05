@@ -20,6 +20,11 @@ Dependencies for React:
 npm-install-all
 npm -i axios
 npm -i firebase
+
+Windows:
+npm install -all
+npm i axios
+npm i firebase
 ```
 
 Attempt running:
