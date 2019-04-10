@@ -15,6 +15,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest(
     );
     console.log("Dialogflow Request body: " + JSON.stringify(request.body));
 
+
+
     function welcome(agent) {
       agent.add(`Welcome to my agent!`);
     }
@@ -102,6 +104,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest(
           `If you need more help, please type **'/ticket'** to submit a support ticket.`
         );
       }
+      
     }
 
     let intentMap = new Map();

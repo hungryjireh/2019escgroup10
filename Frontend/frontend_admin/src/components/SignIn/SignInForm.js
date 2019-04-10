@@ -142,7 +142,8 @@ const SignInFormComp = props => {
       <FormHeader>Hello!</FormHeader>
       <FormContent onSubmit={handleFormSubmit}>
         <label for="username">Username</label>
-        <ContentUser
+        <ContentUser id='username'
+          type='text'
           value={username}
           onChange={e => {
             setIsWrong(false);
@@ -151,7 +152,7 @@ const SignInFormComp = props => {
           }}
         />
         <label for="password">Password</label>
-        <ContentPassword
+        <ContentPassword id='password'
           type="password"
           value={password}
           onChange={e => {

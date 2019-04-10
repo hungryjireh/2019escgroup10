@@ -30,4 +30,4 @@ const OverviewItemComp = props => {
   );
 };
 
-export default OverviewItemComp;
+export default {OverviewItemComp, OverviewItem};

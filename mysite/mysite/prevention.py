@@ -14,8 +14,8 @@ class MessagePostRequestThrottle(BaseThrottle):
         if len(self.history) >= 3:
             data = Counter(self.history)
             for key, value in data.items():
-                if value == 2:
-                raise Throttled(detail=(
+                if value == 15:
+                    raise Throttled(detail=(
             "You have reached the limit of 15 open requests. "
             "Please wait until your existing requests have been "
             "evaluated before submitting additional disputes. "))

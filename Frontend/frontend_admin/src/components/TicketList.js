@@ -19,10 +19,10 @@ const TicketList = ({ user, tickets }) => {
         </ul>
       </div>
       <div className="ticketlist-body">
-        <ul className="ticketlist-body-list">{renderedTickets}</ul>
+        <ul data-testid="1" className="ticketlist-body-list">{renderedTickets}</ul>
       </div>
     </div>
   );
 };
 
-export default TicketList;
+export default {TicketList, renderedTickets};
