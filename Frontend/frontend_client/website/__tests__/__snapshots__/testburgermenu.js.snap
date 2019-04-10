@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BurgerLink renders 1`] = `
+<DocumentFragment>
+  <a
+    class="sc-htpNat gOasEt"
+  />
+</DocumentFragment>
+`;

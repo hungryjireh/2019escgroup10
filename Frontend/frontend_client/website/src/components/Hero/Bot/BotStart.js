@@ -8,14 +8,14 @@ const BotStart = styled.div`
   display: flex;
 `;
 
-const BlueHead = styled.div`
+export const BlueHead = styled.div`
   width: 100%;
   height: 24%;
   background-color: #3e76f9;
   border-radius: 8px 8px 0 0;
 `;
 
-const BotImage = styled.img`
+export const BotImage = styled.img`
   width: 40%;
   position: absolute;
   top: 10%;
@@ -25,7 +25,7 @@ const BotImage = styled.img`
   border-radius: 100px;
 `;
 
-const BotFormOne = styled.input`
+export const BotFormOne = styled.input`
   width: 60%;
   height: 8%;
   background: white;
@@ -43,7 +43,7 @@ const BotFormOne = styled.input`
   }
 `;
 
-const BotFormTwo = styled.input`
+export const BotFormTwo = styled.input`
   width: 60%;
   height: 8%;
   background: white;
@@ -61,7 +61,7 @@ const BotFormTwo = styled.input`
   }
 `;
 
-const BotButton = styled(Link)`
+export const BotButton = styled(Link)`
   font-size: 1.2rem;
   border: none;
   background: white;
