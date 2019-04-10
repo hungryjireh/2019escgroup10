@@ -43,4 +43,6 @@ urlpatterns = [
     url(r'^api/token/refresh/$', TokenRefreshView.as_view(), name='token_refresh'),
     url(r'^api/tickets/$', views.message_list),
     url(r'^api/customers/(?P<pk>[0-9]+)$', views.message_detail),
+    url(r'^api/user/$', views.user_detail),
+    url(r'^api/staff/$', views.staff_list),
 ]
