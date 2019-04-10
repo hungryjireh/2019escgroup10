@@ -4,7 +4,7 @@ import axios from "axios";
 import decode from "jwt-decode";
 import history from "../../history";
 
-const SignInForm = styled.div`
+export const SignInForm = styled.div`
   width: 40%;
   height: 70%;
   background-color: hsl(210, 36%, 99%);
@@ -15,14 +15,14 @@ const SignInForm = styled.div`
   padding: 8rem 16rem;
 `;
 
-const FormHeader = styled.h1`
+export const FormHeader = styled.h1`
   font-size: 6rem;
   color: #004d66;
   margin-bottom: 1rem;
   font-weight: 100;
 `;
 
-const FormContent = styled.form`
+export const FormContent = styled.form`
   display: flex;
   flex-direction: column;
   & > label {
@@ -33,7 +33,7 @@ const FormContent = styled.form`
   }
 `;
 
-const ContentUser = styled.input`
+export const ContentUser = styled.input`
   width: 100%;
   height: 4.2rem;
   border: 1px solid silver;
@@ -43,7 +43,7 @@ const ContentUser = styled.input`
   margin-bottom: 2rem;
 `;
 
-const ContentPassword = styled.input`
+export const ContentPassword = styled.input`
   width: 100%;
   height: 4.2rem;
   border: 1px solid silver;
@@ -52,7 +52,7 @@ const ContentPassword = styled.input`
   padding: 0 1rem;
 `;
 
-const FormButton = styled.button`
+export const FormButton = styled.button`
   width: 100%;
   height: 4.2rem;
   border: 1px solid silver;
