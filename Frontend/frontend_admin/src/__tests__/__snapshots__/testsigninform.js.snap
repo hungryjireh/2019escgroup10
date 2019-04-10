@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContentPassword renders 1`] = `
+<DocumentFragment>
+  <input
+    class="sc-ifAKCX gAKSmR"
+  />
+</DocumentFragment>
+`;
+
+exports[`ContentUser renders 1`] = `
+<DocumentFragment>
+  <input
+    class="sc-bxivhb bboGsa"
+  />
+</DocumentFragment>
+`;
+
+exports[`FormButton renders 1`] = `
+<DocumentFragment>
+  <button
+    class="sc-EHOje iILhao"
+  />
+</DocumentFragment>
+`;
+
+exports[`FormContent renders 1`] = `
+<DocumentFragment>
+  <form
+    class="sc-htpNat exKjCZ"
+  />
+</DocumentFragment>
+`;
+
+exports[`FormHeader renders 1`] = `
+<DocumentFragment>
+  <h1
+    class="sc-bwzfXH cprBNA"
+  />
+</DocumentFragment>
+`;
