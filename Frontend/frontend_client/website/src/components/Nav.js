@@ -15,12 +15,12 @@ const Nav = styled.nav`
   z-index: 3;
 `;
 
-const NavList = styled.ul`
+export const NavList = styled.ul`
   display: flex;
   align-items: center;
 `;
 
-const ListItem = styled.li`
+export const ListItem = styled.li`
   padding: 1.5rem;
   margin-left: 3rem;
   cursor: pointer
@@ -29,7 +29,7 @@ const ListItem = styled.li`
   }
 `;
 
-const ItemLink = styled.a`
+export const ItemLink = styled.a`
   color: #fefefe;
   &::selection {
     background-color: #f9c03f;
@@ -37,7 +37,7 @@ const ItemLink = styled.a`
   }
 `;
 
-const NavBurger = styled.img`
+export const NavBurger = styled.img`
   display: none;
 
   @media (max-width: 1100px) {

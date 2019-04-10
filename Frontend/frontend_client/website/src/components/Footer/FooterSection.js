@@ -5,7 +5,7 @@ const FooterSection = styled.div`
   margin-left: 1rem;
 `;
 
-const SectionHeader = styled.h3`
+export const SectionHeader = styled.h3`
   color: #00bcd4;
   font-size: 2rem;
   font-weight: 600;
@@ -20,16 +20,16 @@ const SectionHeader = styled.h3`
   }
 `;
 
-const SectionList = styled.ul`
+export const SectionList = styled.ul`
   display: flex;
   flex-direction: column;
 `;
 
-const ListItem = styled.li`
+export const ListItem = styled.li`
   margin-bottom: 2rem;
 `;
 
-const ItemLink = styled.a`
+export const ItemLink = styled.a`
   font-size: 1.7rem;
   font-weight: 300;
   color: #a5a5af;

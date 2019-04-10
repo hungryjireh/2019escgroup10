@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExplainHeader renders 1`] = `
+<DocumentFragment>
+  <h1
+    class="sc-EHOje egSPxn"
+  />
+</DocumentFragment>
+`;
+
+exports[`ExplainSectionWrapper renders 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-bZQynM ciVANN"
+  />
+</DocumentFragment>
+`;

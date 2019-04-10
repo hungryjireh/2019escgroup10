@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BotFace renders 1`] = `
+<DocumentFragment>
+  <img
+    class="sc-bwzfXH eAGVZw"
+  />
+</DocumentFragment>
+`;
+
+exports[`BotText renders 1`] = `
+<DocumentFragment>
+  <p
+    class="sc-htpNat dkMODp"
+  />
+</DocumentFragment>
+`;

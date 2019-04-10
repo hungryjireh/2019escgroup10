@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ClientFace renders 1`] = `
+<DocumentFragment>
+  <img
+    class="sc-bwzfXH kQZLzn"
+  />
+</DocumentFragment>
+`;
+
+exports[`ClientText renders 1`] = `
+<DocumentFragment>
+  <p
+    class="sc-htpNat fvOSVV"
+  />
+</DocumentFragment>
+`;
