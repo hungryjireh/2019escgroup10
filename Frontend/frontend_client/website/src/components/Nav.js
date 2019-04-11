@@ -63,7 +63,7 @@ const NavComp = () => {
     <Nav>
       <NavList>
         <ListItem style={{ margin: "0 auto 0 1.6rem" }}>
-          <ItemLink href="https://beta.acnapi.io">
+          <ItemLink data-testid="home-logo" href="https://beta.acnapi.io">
             <img
               className="company-logo"
               src={require("../assets/acnapi-logo-white.png")}
@@ -73,16 +73,16 @@ const NavComp = () => {
           </ItemLink>
         </ListItem>
         <ListItem className="nav-links">
-          <ItemLink href="">About Us</ItemLink>
+          <ItemLink href="https://beta.acnapi.io/#!/#about_us">About Us</ItemLink>
         </ListItem>
         <ListItem className="nav-links">
-          <ItemLink href="">Our Assets</ItemLink>
+          <ItemLink href="https://beta.acnapi.io/#!/#assets">Our Assets</ItemLink>
         </ListItem>
         <ListItem className="nav-links">
-          <ItemLink href="">Case Studies</ItemLink>
+          <ItemLink href="https://beta.acnapi.io/#!/#case_study">Case Studies</ItemLink>
         </ListItem>
         <ListItem className="nav-links" style={{ margin: "0 1.6rem 0 3rem" }}>
-          <ItemLink href="">Contact Us</ItemLink>
+          <ItemLink href="https://beta.acnapi.io/#!/">Contact Us</ItemLink>
         </ListItem>
         <NavBurger
           onClick={handleBurgerClick}
