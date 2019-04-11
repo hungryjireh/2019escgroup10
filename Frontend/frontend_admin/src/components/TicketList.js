@@ -19,7 +19,7 @@ const TicketList = ({ user, tickets }) => {
         </ul>
       </div>
       <div className="ticketlist-body">
-        <ul data-testid="1" className="ticketlist-body-list">{renderedTickets}</ul>
+        <ul className="ticketlist-body-list">{renderedTickets}</ul>
       </div>
     </div>
   );

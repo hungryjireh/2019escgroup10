@@ -83,7 +83,7 @@ test('Password field input works', async () => {
 test('calls "onClick" prop on button click', () => {
     // Render new instance in every test to prevent leaking state
     const onClick = jest.fn();
-    const { getByText } = render(<FormButton onClick={onClick}>Sign In</FormButton>);
+    const { getByText } = render(<FormButton onClick={onClick}>Sign In<FormButton/>);
 
     fireEvent.click(getByText(/Sign In/i));
     expect(onClick).toHaveBeenCalled();

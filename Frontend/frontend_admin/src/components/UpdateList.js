@@ -30,7 +30,7 @@ const ListHeader = styled.div`
 
 const HeaderTitle = styled.div``;
 
-const HeaderButton = styled.button`
+export const HeaderButton = styled.button`
     cursor: pointer
     border: none;
     background-color: inherit;
@@ -56,7 +56,7 @@ const HeaderPopup = styled.div`
   }
 `;
 
-const PopupOptions = styled.li`
+export const PopupOptions = styled.li`
   & > button {
     width: 100%;
     border: none;
@@ -73,7 +73,7 @@ const PopupOptions = styled.li`
   }
 `;
 
-const ListContent = styled.ul`
+export const ListContent = styled.ul`
   min-height: 500px;
   max-height: 580px;
   overflow: scroll;
@@ -96,7 +96,7 @@ function handleOptionsButtonClick(event) {
   document.querySelector(".title").innerText = event.target.innerText;
 }
 
-const UpdateListComp = ({ user }) => {
+export const UpdateListComp = ({ user }) => {
   const updates = useCollection("updates", "updatedTime");
   const reversedUpdates = [];
   if (updates.length > 0) {
@@ -135,7 +135,7 @@ const UpdateListComp = ({ user }) => {
           </ul>
         </HeaderPopup>
       </ListHeader>
-      <ListContent>{renderUpdates}</ListContent>
+      <ListContent data-testid="list">{renderUpdates}</ListContent>
     </UpdateList>
   );
 };
