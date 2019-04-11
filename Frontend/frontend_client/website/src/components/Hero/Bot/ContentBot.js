@@ -8,7 +8,7 @@ const ContentBot = styled.div`
   position: relative;
 `;
 
-const BotFace = styled.img`
+export const BotFace = styled.img`
   width: 36px;
   display: inline-block;
   position: absolute;
@@ -18,7 +18,7 @@ const BotFace = styled.img`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
 `;
 
-const BotText = styled.p`
+export const BotText = styled.p`
   display: inline-block;
   background-color: white;
   // max-width: 60%;

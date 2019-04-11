@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ItemLink renders 1`] = `
+<DocumentFragment>
+  <a
+    class="sc-ifAKCX heBHq"
+  />
+</DocumentFragment>
+`;
+
+exports[`ListItem renders 1`] = `
+<DocumentFragment>
+  <li
+    class="sc-bxivhb giIgxL"
+  />
+</DocumentFragment>
+`;
+
+exports[`SectionHeader renders 1`] = `
+<DocumentFragment>
+  <h3
+    class="sc-bwzfXH kGzkEe"
+  />
+</DocumentFragment>
+`;
+
+exports[`SectionList renders 1`] = `
+<DocumentFragment>
+  <ul
+    class="sc-htpNat dePyzG"
+  />
+</DocumentFragment>
+`;

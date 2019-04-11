@@ -7,7 +7,7 @@ const ContentClient = styled.div`
   position: relative;
 `;
 
-const ClientFace = styled.img`
+export const ClientFace = styled.img`
   width: 36px;
   display: inline-block;
   position: absolute;
@@ -17,7 +17,7 @@ const ClientFace = styled.img`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
 `;
 
-const ClientText = styled.p`
+export const ClientText = styled.p`
   display: inline-block;
   background-color: white;
   padding: 1.4rem;

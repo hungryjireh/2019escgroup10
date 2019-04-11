@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChattingContent renders 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-htoDjs dZrnIb"
+  />
+</DocumentFragment>
+`;
+
+exports[`ChattingForm renders 1`] = `
+<DocumentFragment>
+  <form
+    class="sc-dnqmqq bMncOq"
+  />
+</DocumentFragment>
+`;
+
+exports[`ChattingHeader renders 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-gzVnrw dxrBOf"
+  />
+</DocumentFragment>
+`;
+
+exports[`FormButton renders 1`] = `
+<DocumentFragment>
+  <button
+    class="sc-gZMcBi cPiwuK"
+  />
+</DocumentFragment>
+`;
+
+exports[`FormChatbox renders 1`] = `
+<DocumentFragment>
+  <textarea
+    class="sc-iwsKbI bhkOux"
+  />
+</DocumentFragment>
+`;

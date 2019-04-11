@@ -16,14 +16,14 @@ const ExplainSection = styled.div`
   }
 `;
 
-const SectionNumber = styled.div`
+export const SectionNumber = styled.div`
   position: absolute;
   color: #facf6b;
   font-size: 10rem;
   top: -10%;
 `;
 
-const SectionImage = styled.img`
+export const SectionImage = styled.img`
   width: 100%;
   margin-bottom: 4rem;
 
@@ -32,7 +32,7 @@ const SectionImage = styled.img`
   }
 `;
 
-const SectionText = styled.p`
+export const SectionText = styled.p`
   font-size: 1.6rem;
   line-height: 2;
   color: white;

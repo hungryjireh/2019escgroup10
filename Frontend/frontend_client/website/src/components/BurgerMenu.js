@@ -17,7 +17,7 @@ const BurgerMenu = styled.div`
   z-index: 5;
 `;
 
-const Darken = styled.div`
+export const Darken = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -27,7 +27,7 @@ const Darken = styled.div`
   transition
 `;
 
-const BurgerLink = styled.a`
+export const BurgerLink = styled.a`
   font-size: 1.4rem;
   margin-bottom: 3rem;
 `;
