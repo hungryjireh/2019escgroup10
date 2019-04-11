@@ -94,14 +94,14 @@ public class ChatbotTests {
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
 
-        userInput.sendKeys("I want to know more about API DevOps");
+        userInput.sendKeys("I want to know more about AI Translator");
         sendMessageButton.click();
         botMessageNum += 1;
 
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(botReply,botMessageNum));
 
         java.util.List<WebElement> botReplyList = driver.findElements(botReply);
-        String targetURL = "https://beta.acnapi.io/info/api-devops";
+        String targetURL = "https://beta.acnapi.io/info/ai-translator";
 
         Assert.assertFalse("The API's info is not shown out.",botReplyList.get(botReplyList.size()-2).getText().indexOf(targetURL) == -1);
     }
@@ -194,7 +194,7 @@ public class ChatbotTests {
     @After
     public void tearDown() throws Exception {
         Thread.sleep(2000);
-        driver.quit();
+//        driver.quit();
     }
 
     private boolean isElementPresent(By by) {
