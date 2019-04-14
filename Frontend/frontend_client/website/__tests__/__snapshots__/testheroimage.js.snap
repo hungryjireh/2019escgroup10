@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HeroImageMobile renders 1`] = `
+<DocumentFragment>
+  <img
+    class="sc-htpNat dSGxGw"
+  />
+</DocumentFragment>
+`;
+
+exports[`HeroImageWrapper renders 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-bdVaJa hqwBfd"
+  />
+</DocumentFragment>
+`;
+
+exports[`ImageHeader renders 1`] = `
+<DocumentFragment>
+  <h1
+    class="sc-bxivhb cCxSJf"
+  />
+</DocumentFragment>
+`;
+
+exports[`ImageSubtext renders 1`] = `
+<DocumentFragment>
+  <h2
+    class="sc-ifAKCX iPLhhO"
+  />
+</DocumentFragment>
+`;
+
+exports[`TelegramSubtext renders 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-EHOje gUgiRc"
+  />
+</DocumentFragment>
+`;
+
+exports[`TextHighlight renders 1`] = `
+<DocumentFragment>
+  <span
+    class="sc-bZQynM hPNeBX"
+  />
+</DocumentFragment>
+`;

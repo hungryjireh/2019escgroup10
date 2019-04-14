@@ -17,7 +17,7 @@ const BurgerMenu = styled.div`
   z-index: 5;
 `;
 
-const Darken = styled.div`
+export const Darken = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -27,7 +27,7 @@ const Darken = styled.div`
   transition
 `;
 
-const BurgerLink = styled.a`
+export const BurgerLink = styled.a`
   font-size: 1.4rem;
   margin-bottom: 3rem;
 `;
@@ -37,11 +37,11 @@ const BurgerMenuComp = ({ setHasBurgerFalse }) => {
   return (
     <div>
       <BurgerMenu className="slide-in-animation">
-        <BurgerLink href="">Home</BurgerLink>
-        <BurgerLink href="">About Us</BurgerLink>
-        <BurgerLink href="">Our Assets</BurgerLink>
-        <BurgerLink href="">Case Studies</BurgerLink>
-        <BurgerLink href="">Contact Us</BurgerLink>
+        <BurgerLink href="https://beta.acnapi.io">Home</BurgerLink>
+        <BurgerLink href="https://beta.acnapi.io/#!/#about_us">About Us</BurgerLink>
+        <BurgerLink href="https://beta.acnapi.io/#!/#assets">Our Assets</BurgerLink>
+        <BurgerLink href="https://beta.acnapi.io/#!/#case_study">Case Studies</BurgerLink>
+        <BurgerLink href="https://beta.acnapi.io/#!/">Contact Us</BurgerLink>
       </BurgerMenu>
       <Darken
         className="darken-animation"

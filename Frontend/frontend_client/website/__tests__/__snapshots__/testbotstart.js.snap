@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BlueHead renders 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-bwzfXH cbqDFY"
+  />
+</DocumentFragment>
+`;
+
+exports[`BotFormOne renders 1`] = `
+<DocumentFragment>
+  <input
+    class="sc-bxivhb fuxUrh"
+  />
+</DocumentFragment>
+`;
+
+exports[`BotFormTwo renders 1`] = `
+<DocumentFragment>
+  <input
+    class="sc-ifAKCX bVKKcl"
+  />
+</DocumentFragment>
+`;
+
+exports[`BotImage renders 1`] = `
+<DocumentFragment>
+  <img
+    class="sc-htpNat hOunee"
+  />
+</DocumentFragment>
+`;

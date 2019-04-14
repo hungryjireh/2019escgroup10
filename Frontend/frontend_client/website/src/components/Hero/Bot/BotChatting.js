@@ -18,14 +18,14 @@ function useAutoScroll(ref) {
   });
 }
 
-const BotChatting = styled.div`
+export const BotChatting = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
 `;
 
-const ChattingHeader = styled.div`
+export const ChattingHeader = styled.div`
   min-height: 14%;
   background: #3e76f9;
   border-radius: 8px 8px 0 0;
@@ -41,13 +41,13 @@ const ChattingHeader = styled.div`
   }
 `;
 
-const ChattingContent = styled.div`
+export const ChattingContent = styled.div`
   height: 76%;
   overflow: auto;
   padding: 4rem;
 `;
 
-const ChattingForm = styled.form`
+export const ChattingForm = styled.form`
   height: 12%;
   width: 100%;
   position: relative;
@@ -55,7 +55,7 @@ const ChattingForm = styled.form`
   border-radius: 0 0 8px 8px;
 `;
 
-const FormChatbox = styled.textarea`
+export const FormChatbox = styled.textarea`
   height: 82%;
   width: 100%;
   border: none;
@@ -71,7 +71,7 @@ const FormChatbox = styled.textarea`
   }
 `;
 
-const FormButton = styled.button`
+export const FormButton = styled.button`
   font-size: 1.4rem;
   border: none;
   display: inline-block;
