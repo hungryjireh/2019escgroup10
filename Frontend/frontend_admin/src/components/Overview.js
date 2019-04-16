@@ -11,7 +11,7 @@ const Overview = styled.div`
   border-radius: 8px;
 `;
 
-const SectionList = styled.ul`
+export const SectionList = styled.ul`
   display: flex;
 `;
 
