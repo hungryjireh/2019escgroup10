@@ -7,7 +7,7 @@ const OverviewSection = styled.div`
   margin-right: 5rem;
 `;
 
-const SectionHeader = styled.div`
+export const SectionHeader = styled.div`
   // border: 1px solid green;
   font-size: 1.4rem;
   color: #b3ecff;
