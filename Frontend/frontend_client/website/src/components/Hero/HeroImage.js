@@ -4,7 +4,7 @@ import "./HeroImage.css";
 
 // REFACTOR START
 
-export const HeroImageWrapper = styled.div`
+const HeroImageWrapper = styled.div`
   min-width: 660px;
   @media (max-width: 1100px) {
     margin-bottom: 4rem;
@@ -25,7 +25,7 @@ const HeroImage = styled.img`
   }
 `;
 
-export const HeroImageMobile = styled.img`
+const HeroImageMobile = styled.img`
   display: none;
   @media (max-width: 1100px) {
     display: inline;
@@ -50,7 +50,7 @@ export const HeroImageMobile = styled.img`
   }
 `;
 
-export const ImageHeader = styled.h1`
+const ImageHeader = styled.h1`
   color: hsl(0, 0%, 18%);
   line-height: 1;
   font-weight: 800;
@@ -70,7 +70,7 @@ export const ImageHeader = styled.h1`
   }
 `;
 
-export const ImageSubtext = styled.h2`
+const ImageSubtext = styled.h2`
   color: hsl(0, 0%, 18%);
   font-weight: 900;
   text-align: center;
@@ -106,7 +106,7 @@ export const ImageSubtext = styled.h2`
   }
 `;
 
-export const TelegramSubtext = styled.div`
+const TelegramSubtext = styled.div`
   display: none;
 
   @media (max-width: 1100px) {
@@ -129,7 +129,7 @@ export const TelegramSubtext = styled.div`
   }
 `;
 
-export const TextHighlight = styled.span`
+const TextHighlight = styled.span`
   color: #f9c03f;
   &::selection {
     background-color: #f9c03f;

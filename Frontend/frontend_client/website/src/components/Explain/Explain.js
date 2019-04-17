@@ -20,7 +20,7 @@ const Explain = styled.div`
   }
 `;
 
-export const ExplainHeader = styled.h1`
+const ExplainHeader = styled.h1`
   font-size: 5.6rem;
   color: #f9c03f;
   font-family: "Open Sans", sans-serif;
@@ -31,7 +31,7 @@ export const ExplainHeader = styled.h1`
   }
 `;
 
-export const ExplainSectionWrapper = styled.div`
+const ExplainSectionWrapper = styled.div`
   max-width: 1440px;
   display: flex;
   justify-content: space-between;
