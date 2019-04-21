@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+[packages]
+dj-database-url = "*"
+django = "*"
+django-allauth = "*"
+django-anymail = "*"
+django-cors-headers = "*"
+django-filter = "*"
+django-rest-auth = "*"
+djangorestframework = "*"
+djangorestframework-simplejwt = "*"
+django_telegrambot = "*"
+gunicorn = "*"
+psycopg2 = "*"
+python-telegram-bot = "*"
+PyJWT = "*"
+requests = "*"
+requests-oauthlib = "*"
+selenium = "*"
+whitenoise = "*"
+
+[requires]
+python_version = "3.4.3"

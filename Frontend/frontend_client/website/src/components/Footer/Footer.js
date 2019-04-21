@@ -23,7 +23,7 @@ const Footer = styled.div`
   }
 `;
 
-export const FooterHeader = styled.h1`
+const FooterHeader = styled.h1`
   color: rgba(255, 255, 255, 0.7);
   font-size: 5.6rem;
   font-weight: 200;
@@ -46,7 +46,7 @@ export const FooterHeader = styled.h1`
   }
 `;
 
-export const FooterSectionWrapper = styled.div`
+const FooterSectionWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 80%;

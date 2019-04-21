@@ -5,14 +5,14 @@ const OverviewItem = styled.li`
   margin-right: 2rem;
 `;
 
-const ItemNum = styled.div`
+export const ItemNum = styled.div`
   font-size: 5.2rem;
   color: ${props => (props.critical ? "#D64545" : "white")};
   margin-bottom: 2rem;
   // border: 1px solid black;
 `;
 
-const ItemHeader = styled.div`
+export const ItemHeader = styled.div`
   color: #b3ecff;
   font-size: 14px;
   text-transform: uppercase;

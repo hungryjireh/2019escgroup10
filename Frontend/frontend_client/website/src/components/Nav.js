@@ -15,12 +15,12 @@ const Nav = styled.nav`
   z-index: 3;
 `;
 
-export const NavList = styled.ul`
+const NavList = styled.ul`
   display: flex;
   align-items: center;
 `;
 
-export const ListItem = styled.li`
+const ListItem = styled.li`
   padding: 1.5rem;
   margin-left: 3rem;
   cursor: pointer
@@ -29,7 +29,7 @@ export const ListItem = styled.li`
   }
 `;
 
-export const ItemLink = styled.a`
+const ItemLink = styled.a`
   color: #fefefe;
   &::selection {
     background-color: #f9c03f;
@@ -37,7 +37,7 @@ export const ItemLink = styled.a`
   }
 `;
 
-export const NavBurger = styled.img`
+const NavBurger = styled.img`
   display: none;
 
   @media (max-width: 1100px) {
@@ -63,7 +63,7 @@ const NavComp = () => {
     <Nav>
       <NavList>
         <ListItem style={{ margin: "0 auto 0 1.6rem" }}>
-          <ItemLink data-testid="home-logo" href="https://beta.acnapi.io">
+          <ItemLink href="https://beta.acnapi.io">
             <img
               className="company-logo"
               src={require("../assets/acnapi-logo-white.png")}
@@ -73,16 +73,16 @@ const NavComp = () => {
           </ItemLink>
         </ListItem>
         <ListItem className="nav-links">
-          <ItemLink href="https://beta.acnapi.io/#!/#about_us">About Us</ItemLink>
+          <ItemLink href="">About Us</ItemLink>
         </ListItem>
         <ListItem className="nav-links">
-          <ItemLink href="https://beta.acnapi.io/#!/#assets">Our Assets</ItemLink>
+          <ItemLink href="">Our Assets</ItemLink>
         </ListItem>
         <ListItem className="nav-links">
-          <ItemLink href="https://beta.acnapi.io/#!/#case_study">Case Studies</ItemLink>
+          <ItemLink href="">Case Studies</ItemLink>
         </ListItem>
         <ListItem className="nav-links" style={{ margin: "0 1.6rem 0 3rem" }}>
-          <ItemLink href="https://beta.acnapi.io/#!/">Contact Us</ItemLink>
+          <ItemLink href="">Contact Us</ItemLink>
         </ListItem>
         <NavBurger
           onClick={handleBurgerClick}
