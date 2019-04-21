@@ -1,9 +1,8 @@
-package Chatbot;
+package week10;
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,7 +17,7 @@ public class ChatbotTests {
 
     @Before
     public void setUp() throws Exception {
-        System.setProperty("webdriver.gecko.driver","F:\\selenium_drivers\\geckodriver.exe");
+        System.setProperty("webdriver.gecko.driver","E:\\selenium_drivers\\geckodriver.exe");
         driver = new FirefoxDriver();
         baseUrl = "https://bottybyacnapi.netlify.com/";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -130,7 +129,8 @@ public class ChatbotTests {
         java.util.List<WebElement> botReplyList = driver.findElements(botReply);
         String targetURL = "https://beta.acnapi.io/docs/api-devops";
 
-        Assert.assertFalse("The API's docs  is not shown out.",botReplyList.get(botReplyList.size()-2).getText().indexOf(targetURL) == -1);
+        String lastMsg = botReplyList.get(botReplyList.size()-2).getText();
+        Assert.assertTrue("The API's docs  is not shown out.",lastMsg.contains(targetURL));
     }
 
     @Test //4
@@ -165,7 +165,7 @@ public class ChatbotTests {
         sendMessageButton.click();
         try{
             wait.until(ExpectedConditions.numberOfElementsToBeLessThan(botReply,botReplyList.size()));
-        }catch (org.openqa.selenium.TimeoutException e){
+        }catch (TimeoutException e){
             fail("The chatbot didn't restart in 10 s.");
         }
 
@@ -186,15 +186,43 @@ public class ChatbotTests {
         WebDriverWait wait = new WebDriverWait(driver,10);
         try{
             wait.until(ExpectedConditions.titleIs("ACNAPI - Catalyst Maker Studio"));
-        }catch (org.openqa.selenium.TimeoutException e){
+        }catch (TimeoutException e){
             fail("The page didn't jump to the main page");
         }
+    }
+
+    @Test //6
+    public void testCommonQuestion(){
+        //Enquiry about specif API. Test passes if the API's help link is returned.
+
+        int botMessageNum = 1;//The total number of messages sent by the robot
+
+        WebDriver driver = this.driver;
+        driver.get(baseUrl);
+
+        WebElement userInput = driver.findElement(By.className("form-chatbox")); //locate the user input
+        WebElement sendMessageButton = driver.findElement(By.cssSelector("button.sc-jKJlTe.evGbBd"));//locate the "submit" button's location
+        By botReply = By.cssSelector("p.sc-jzJRlG.gpAGfg");
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        userInput.sendKeys("I'm looking for a career in your company.");
+        sendMessageButton.click();
+        botMessageNum += 1;
+
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(botReply,botMessageNum));
+
+        java.util.List<WebElement> botReplyList = driver.findElements(botReply);
+        String targetURL = "https://talent.acnapi.io";
+
+        System.out.println();
+        Assert.assertTrue("The API's docs  is not shown out.",botReplyList.get(botReplyList.size()-1).getText().contains(targetURL));
     }
 
     @After
     public void tearDown() throws Exception {
         Thread.sleep(2000);
-//        driver.quit();
+        //driver.quit();
     }
 
     private boolean isElementPresent(By by) {
