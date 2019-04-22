@@ -1,4 +1,4 @@
-package Chatbot;
+package week10;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -9,6 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.fail;
@@ -21,7 +22,7 @@ public class AdminTests {
 
     @Before
     public void setUp() throws Exception {
-        System.setProperty("webdriver.gecko.driver","F:\\selenium_drivers\\geckodriver.exe");
+        System.setProperty("webdriver.gecko.driver","E:\\selenium_drivers\\geckodriver.exe");
         driver = new FirefoxDriver();
         baseUrl = "https://acnapi-335c7.firebaseapp.com";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -43,7 +44,7 @@ public class AdminTests {
         WebDriverWait wait= new WebDriverWait(driver,10);
         try{
             wait.until(ExpectedConditions.urlContains("main="));
-        }catch (org.openqa.selenium.TimeoutException e){
+        }catch (TimeoutException e){
             fail("The page didn't jump to the dashboard");
         }
     }
@@ -65,7 +66,7 @@ public class AdminTests {
         try{
             wait.until(ExpectedConditions.urlContains("main="));
             fail("The invalid username and password login for some reason.");
-        }catch (org.openqa.selenium.TimeoutException e){
+        }catch (TimeoutException e){
             wait.until(ExpectedConditions.urlMatches("https://acnapi-335c7.firebaseapp.com/"));
             Assert.assertTrue(isElementPresent(By.cssSelector("div.warning")));
             Assert.assertTrue(driver.findElement(By.cssSelector("div.warning")).getText().contains("Login failed!"));
@@ -88,11 +89,11 @@ public class AdminTests {
         WebDriverWait wait= new WebDriverWait(driver,10);
         wait.until(ExpectedConditions.urlContains("main="));
 
-        WebElement logoutButton = driver.findElement(By.cssSelector("lli.sc-dxgOiQ:nth-child(5) > button:nth-child(1)"));
+        WebElement logoutButton = driver.findElement(By.cssSelector("li.sc-dxgOiQ:nth-child(5) > button:nth-child(1)"));
         logoutButton.click();
         try{
             wait.until(ExpectedConditions.urlToBe("https://acnapi-335c7.firebaseapp.com/"));
-        }catch (org.openqa.selenium.TimeoutException e){
+        }catch (TimeoutException e){
             fail("The page didn't logout.");
         }
     }
@@ -125,12 +126,64 @@ public class AdminTests {
         //Test passes if the message sent is occurred in the conversation box
     }
 
+    @Test //5
+    public void testClickLinks() throws Exception {
+        //Login and send message to the user. Test passes if the message sent appears in the conversation box.
+        WebDriver driver = this.driver;
+        driver.get(baseUrl);
+        WebElement username = driver.findElement(By.cssSelector("#root > div > div > div > form > input.sc-hEsumM.eqLHtx"));
+        WebElement password = driver.findElement(By.cssSelector("input[type = \"password\"]"));
+        WebElement loginButton =  driver.findElement(By.cssSelector("button[to = \"/dashboard\"]"));
+
+        username.sendKeys("admin");
+        password.sendKeys("happy");
+        loginButton.click();
+
+        WebDriverWait wait= new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.urlContains("main="));
+
+        // get all the links
+        List<WebElement> links = driver.findElements(By.tagName("a"));
+        System.out.println(links.size());
+
+        // print all the links
+        for (int i = 0; i < links.size(); i=i+1) {
+            System.out.println(i + " " + links.get(i).getText());
+            System.out.println(i + " " + links.get(i).getAttribute("href"));
+        }
+
+
+        // maximize the browser window
+        driver.manage().window().maximize();
+
+        // click all links in a web page
+        for(int i = 0; i < links.size(); i++)
+        {
+            if(i==0|| i>4){
+                System.out.println("*** Navigating to" + " " + links.get(i).getAttribute("href"));
+                boolean staleElementLoaded = true;
+                while (staleElementLoaded) {
+                    try {
+                        driver.navigate().to(links.get(i).getAttribute("href"));
+                        Thread.sleep(1000);
+                        driver.navigate().back();
+                        links = driver.findElements(By.tagName("a"));
+                        System.out.println("*** Navigated to" + " " + links.get(i).getAttribute("href"));
+                        staleElementLoaded = false;
+                    } catch (StaleElementReferenceException e) {
+                        staleElementLoaded = true;
+                    }
+                }
+            }
+        }
+    }
+
 
 
     @After
     public void tearDown() throws Exception {
-//        Thread.sleep(5000);
-//        driver.quit();
+        //Thread.sleep(5000);
+        //driver.quit();
     }
 
     private boolean isElementPresent(By by) {
