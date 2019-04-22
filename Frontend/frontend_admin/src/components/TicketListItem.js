@@ -16,7 +16,7 @@ const subjectTruncate = subjString => {
   }
 };
 
-const TicketListItem = ({ user, ticket }) => {
+const TicketListItem = ({ user, ticket, highlight }) => {
   const [hasModal, setHasModal] = useState(false);
 
   // useEffect(() => {
@@ -39,7 +39,8 @@ const TicketListItem = ({ user, ticket }) => {
   const changeStatus = e => {
     if (ticket.status === "Unviewed") {
       db.doc(`tickets/${ticket.id}`).update({
-        status: "Await Your Reply"
+        status: "Await Your Reply",
+        statusInt: 1
       });
     }
   };
@@ -51,11 +52,7 @@ const TicketListItem = ({ user, ticket }) => {
           setHasModal(true);
           changeStatus(e);
         }}
-        className={
-          ticket.status === "Unviewed"
-            ? "ticketlistitem-unviewed"
-            : "ticketlistitem"
-        }
+        className={"ticketlistitem " + highlight + "-bg"}
       >
         <ul className="ticketlistitem-list">
           <li>{subjectTruncate(ticket.subject)}</li>

@@ -1,10 +1,13 @@
-import React from "react";
-// import '../style/Navbar.css';
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
 import history from "../history";
+import axios from "axios";
+import { deleteDB } from "idb";
 
+import { messaging } from "../firebase";
 import { image } from "faker";
-// console.log(image.avatar);
+import Settings from "./Settings/Settings";
 
 const Nav = styled.nav`
   font-size: 1.6rem;
@@ -24,14 +27,42 @@ const ListLi = styled.li`
 
 const LiAnchor = styled.a`
   color: #334e68;
+  cursor: pointer;
 `;
 
-const NavComp = () => {
+const LiButton = styled.button`
+  font-size: 1.6rem;
+  color: #334e68;
+  cursor: pointer;
+  border: none;
+  background: none;
+`;
+
+const NavComp = ({ user, setPage }) => {
+  const [hasSettings, setHasSettings] = useState(false);
+
+  const setHasSettingsFalse = () => {
+    setHasSettings(false);
+  };
+
+  const handlePageButtonClick = e => {
+    localStorage.setItem("currentPage", e.target.innerText);
+    setPage(e.target.innerText);
+  };
+
   const handleLogout = () => {
-    localStorage.setItem("admin-is-logged-in", false);
-    localStorage.setItem("admin-logged-in-jti", "");
-    localStorage.setItem("admin-logged-in-userid", "");
-    history.push("/");
+    messaging.getToken().then(async token => {
+      axios.post("https://calm-falls-75658.herokuapp.com/api/push", {
+        token,
+        updatesArray: [false, false, false, false, false]
+      });
+
+      // deleteDB("myIndexedDB");
+      localStorage.setItem("admin-is-logged-in", false);
+      localStorage.setItem("admin-logged-in-jti", "");
+      localStorage.setItem("admin-logged-in-userid", "");
+      history.push("/");
+    });
   };
   return (
     <Nav>
@@ -46,15 +77,22 @@ const NavComp = () => {
           </LiAnchor>
         </ListLi>
         <ListLi>
-          <LiAnchor href="">Dashboard</LiAnchor>
+          <LiButton onClick={handlePageButtonClick}>Dashboard</LiButton>
         </ListLi>
         <ListLi>
-          <LiAnchor href="">Settings</LiAnchor>
+          <LiButton onClick={handlePageButtonClick}>Statistics</LiButton>
         </ListLi>
         <ListLi>
-          <LiAnchor onClick={handleLogout} href="">
-            Logout
-          </LiAnchor>
+          <LiButton
+            onClick={() => {
+              setHasSettings(true);
+            }}
+          >
+            Settings
+          </LiButton>
+        </ListLi>
+        <ListLi>
+          <LiButton onClick={handleLogout}>Logout</LiButton>
         </ListLi>
         <ListLi>
           <LiAnchor href="">
@@ -67,6 +105,13 @@ const NavComp = () => {
           </LiAnchor>
         </ListLi>
       </NavList>
+      <div>
+        {hasSettings &&
+          ReactDOM.createPortal(
+            <Settings user={user} setHasSettingsFalse={setHasSettingsFalse} />,
+            document.querySelector("#settings")
+          )}
+      </div>
     </Nav>
   );
 };

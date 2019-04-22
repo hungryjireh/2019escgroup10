@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { formatRelative } from "date-fns/esm";
+import axios from "axios";
 
 import { db } from "../firebase";
 import useCollection from "../components/useCollection";
@@ -233,6 +234,15 @@ const ModalConvoComp = ({ user, ticket }) => {
       group: ticket.group,
       content: e.target.elements[0].value,
       updatedTime: submitTime
+    });
+    axios.post("https://calm-falls-75658.herokuapp.com/api/push-update", {
+      data: {
+        title: "Ticket Reply by Admin",
+        requester: user.name,
+        type: "admin-update",
+        group: ticket.group
+      },
+      topic: "admin-update"
     });
     e.target.elements[0].value = "";
   };

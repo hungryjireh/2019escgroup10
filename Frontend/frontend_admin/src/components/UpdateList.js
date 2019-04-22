@@ -30,7 +30,7 @@ const ListHeader = styled.div`
 
 const HeaderTitle = styled.div``;
 
-export const HeaderButton = styled.button`
+const HeaderButton = styled.button`
     cursor: pointer
     border: none;
     background-color: inherit;
@@ -56,7 +56,7 @@ const HeaderPopup = styled.div`
   }
 `;
 
-export const PopupOptions = styled.li`
+const PopupOptions = styled.li`
   & > button {
     width: 100%;
     border: none;
@@ -73,7 +73,7 @@ export const PopupOptions = styled.li`
   }
 `;
 
-export const ListContent = styled.ul`
+const ListContent = styled.ul`
   min-height: 500px;
   max-height: 580px;
   overflow: scroll;
@@ -96,7 +96,7 @@ function handleOptionsButtonClick(event) {
   document.querySelector(".title").innerText = event.target.innerText;
 }
 
-export const UpdateListComp = ({ user }) => {
+const UpdateListComp = ({ user }) => {
   const updates = useCollection("updates", "updatedTime");
   const reversedUpdates = [];
   if (updates.length > 0) {
@@ -105,9 +105,41 @@ export const UpdateListComp = ({ user }) => {
     }
   }
 
-  const renderUpdates = reversedUpdates.slice(0, 10).map(update => {
-    return <UpdateItem key={update.id} update={update} user={user} />;
-  });
+  const renderUpdates =
+    user &&
+    reversedUpdates
+      .flatMap(update => {
+        switch (update.type) {
+          case "client-create":
+            return user.config.updates[0] ? (
+              <UpdateItem key={update.id} update={update} user={user} />
+            ) : (
+              []
+            );
+          case "client-update":
+            return user.config.updates[1] ? (
+              <UpdateItem key={update.id} update={update} user={user} />
+            ) : (
+              []
+            );
+          case "admin-update":
+            if (user.id === update.userID) {
+              return user.config.updates[3] ? (
+                <UpdateItem key={update.id} update={update} user={user} />
+              ) : (
+                []
+              );
+            } else {
+              return user.config.updates[2] ? (
+                <UpdateItem key={update.id} update={update} user={user} />
+              ) : (
+                []
+              );
+            }
+        }
+        return <UpdateItem key={update.id} update={update} user={user} />;
+      })
+      .slice(0, 10);
 
   return (
     <UpdateList>
@@ -135,7 +167,7 @@ export const UpdateListComp = ({ user }) => {
           </ul>
         </HeaderPopup>
       </ListHeader>
-      <ListContent data-testid="list">{renderUpdates}</ListContent>
+      <ListContent>{renderUpdates}</ListContent>
     </UpdateList>
   );
 };

@@ -11,14 +11,14 @@ const Overview = styled.div`
   border-radius: 8px;
 `;
 
-export const SectionList = styled.ul`
+const SectionList = styled.ul`
   display: flex;
 `;
 
 const OverviewComp = ({ overviewStatus }) => {
   return (
     <Overview>
-      <OverviewSection data-testid="1" header="Immediate Attention">
+      <OverviewSection header="Immediate Attention">
         <SectionList>
           <OverviewItem critical num="36" name={"Resolve Now"} />
         </SectionList>
