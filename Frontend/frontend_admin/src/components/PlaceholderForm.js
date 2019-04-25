@@ -1,5 +1,5 @@
 import React from "react";
-import { db } from "../firebase";
+import { db, messaging } from "../firebase";
 
 import history from "../history";
 
@@ -25,11 +25,13 @@ const handleFormSubmit = e => {
       content: e.target.elements[4].value,
       submitTime: submitTime,
       lastUpdatedTime: submitTime,
-      status: "Unviewed"
+      status: "Unviewed",
+      statusInt: "0"
     })
     .then(response => {
       eventualID = response.id;
       document.querySelector(".form").reset();
+
       history.push({
         pathname: `/placeholderform=${eventualID}`
       });

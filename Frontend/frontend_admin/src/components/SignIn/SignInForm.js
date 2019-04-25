@@ -4,7 +4,7 @@ import axios from "axios";
 import decode from "jwt-decode";
 import history from "../../history";
 
-export const SignInForm = styled.div`
+const SignInForm = styled.div`
   width: 40%;
   height: 70%;
   background-color: hsl(210, 36%, 99%);
@@ -15,14 +15,14 @@ export const SignInForm = styled.div`
   padding: 8rem 16rem;
 `;
 
-export const FormHeader = styled.h1`
+const FormHeader = styled.h1`
   font-size: 6rem;
   color: #004d66;
   margin-bottom: 1rem;
   font-weight: 100;
 `;
 
-export const FormContent = styled.form`
+const FormContent = styled.form`
   display: flex;
   flex-direction: column;
   & > label {
@@ -33,7 +33,7 @@ export const FormContent = styled.form`
   }
 `;
 
-export const ContentUser = styled.input`
+const ContentUser = styled.input`
   width: 100%;
   height: 4.2rem;
   border: 1px solid silver;
@@ -43,7 +43,7 @@ export const ContentUser = styled.input`
   margin-bottom: 2rem;
 `;
 
-export const ContentPassword = styled.input`
+const ContentPassword = styled.input`
   width: 100%;
   height: 4.2rem;
   border: 1px solid silver;
@@ -52,7 +52,7 @@ export const ContentPassword = styled.input`
   padding: 0 1rem;
 `;
 
-export const FormButton = styled.button`
+const FormButton = styled.button`
   width: 100%;
   height: 4.2rem;
   border: 1px solid silver;
@@ -93,71 +93,74 @@ const SignInFormComp = props => {
 
   const handleFormSubmit = e => {
     e.preventDefault();
-    // axios
-    //   .post("http://localhost:8000/api/token/", {
-    //     username: username,
-    //     password: password
-    //   })
-    //   .then(response => {
-    //     const decoded = decode(response.data.access);
-    //     localStorage.setItem("admin-is-logged-in", true);
-    //     localStorage.setItem("admin-logged-in-jti", decoded.jti);
-    //     localStorage.setItem("admin-logged-in-userid", decoded.user_id);
-    //     history.replace({
-    //       pathname: `/dashboard=${decoded.jti}`,
-    //       state: {
-    //         jti: decoded.jti,
-    //         userID: decoded.user_id
-    //       }
-    //     });
-    //   })
-    //   .catch(error => {
-    //     setIsWrong(true);
-    //   });
+    axios
+      .post("https://stark-woodland-85926.herokuapp.com/api/token/", {
+        username: username,
+        password: password
+      })
+      .then(response => {
+        const decoded = decode(response.data.access);
+        localStorage.setItem("admin-is-logged-in", true);
+        localStorage.setItem("admin-logged-in-jti", decoded.jti);
+        localStorage.setItem("admin-logged-in-userid", decoded.user_id);
+        history.replace({
+          pathname: `/dashboard=${decoded.jti}`,
+          state: {
+            jti: decoded.jti,
+            userID: decoded.user_id
+          }
+        });
+      })
+      .catch(error => {
+        setIsWrong(true);
+      });
 
-    var user_id;
-    if (username === "admin" && password === "happy") {
-      user_id = 1;
-    } else if (username === "bostan" && password === "happy") {
-      user_id = 9;
-    } else if (username === "hello" && password === "happy") {
-      user_id = 5;
-    } else {
-      setIsWrong(true);
-    }
-    localStorage.setItem("admin-is-logged-in", true);
-    localStorage.setItem("admin-logged-in-jti", "blablabla");
-    localStorage.setItem("admin-logged-in-userid", user_id);
-    history.replace({
-      pathname: `/dashboard=blablabla`,
-      state: {
-        jti: "blablabla",
-        userID: user_id
-      }
-    });
+    // var correctAuth = false;
+    // var user_id;
+    // if (username === "admin" && password === "happy") {
+    //   user_id = 1;
+    //   correctAuth = true;
+    // } else if (username === "bostan" && password === "happy") {
+    //   user_id = 9;
+    //   correctAuth = true;
+    // } else if (username === "hello" && password === "happy") {
+    //   user_id = 5;
+    //   correctAuth = true;
+    // } else {
+    //   setIsWrong(true);
+    // }
+    // if (correctAuth) {
+    //   localStorage.setItem("admin-is-logged-in", true);
+    //   localStorage.setItem("admin-logged-in-jti", "blablabla");
+    //   localStorage.setItem("admin-logged-in-userid", user_id);
+    //   history.replace({
+    //     pathname: `/main=blablabla`,
+    //     state: {
+    //       jti: "blablabla",
+    //       userID: user_id
+    //     }
+    //   });
+    // }
   };
 
   return (
     <SignInForm>
       <FormHeader>Hello!</FormHeader>
       <FormContent onSubmit={handleFormSubmit}>
-        <label for="username">Username</label>
-        <ContentUser id='username'
-          type='text'
+        <label htmlFor="username">Username</label>
+        <ContentUser
           value={username}
           onChange={e => {
             setIsWrong(false);
-            console.log(isWrong);
             setUsername(e.target.value);
           }}
         />
         <label for="password">Password</label>
-        <ContentPassword id='password'
+        <ContentPassword
           type="password"
           value={password}
           onChange={e => {
             setIsWrong(false);
-            console.log(isWrong);
             setPassword(e.target.value);
           }}
         />

@@ -9,30 +9,67 @@ import history from "../history";
 import { db } from "../firebase";
 import useCollection from "./useCollection";
 
-const Dashboard = () => {
-  const histObject = history.location;
+const Dashboard = ({ user }) => {
+  // const histObject = history.location;
 
-  const tickets = useCollection("tickets");
+  // const [user, setUser] = useState(null);
+  // useEffect(() => {
+  //   if (!histObject.state) {
+  //     return;
+  //   }
+  //   // db.doc(`users/${histObject.state.userID}`)
+  //   //   .get()
+  //   //   .then(response => {
+  //   //     setUser({
+  //   //       ...response.data(),
+  //   //       id: response.id
+  //   //     });
+  //   //   });
+  //   db.doc(`users/${histObject.state.userID}`).onSnapshot(snapshot => {
+  //     setUser({
+  //       ...snapshot.data(),
+  //       id: snapshot.id
+  //     });
+  //   });
+  // }, []);
 
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    if (!histObject.state) {
-      return;
+  let tickets;
+  if (user) {
+    // const where = user.config.groups.map(group => {
+    //   return {
+    //     param: "group",
+    //     op: "==",
+    //     val: group
+    //   };
+    // });
+    switch (user.config.defaultSort) {
+      case "Status":
+        tickets = useCollection("tickets", "statusInt");
+        break;
+      case "Last Updated Oldest First":
+        tickets = useCollection("tickets", "lastUpdatedTime");
+        break;
+      case "Last Updated Newest First":
+        tickets = useCollection("tickets", "lastUpdatedTime").reverse();
+        break;
+      case "Group":
+        tickets = useCollection("tickets", "group");
+        break;
+      case "Requester":
+        tickets = useCollection("tickets", "requester");
+        break;
+      case "Subject":
+        tickets = useCollection("tickets", "subject");
+        break;
     }
-    db.doc(`users/${histObject.state.userID}`)
-      .get()
-      .then(response => {
-        setUser({
-          ...response.data(),
-          id: response.id
-        });
-      });
-  }, []);
+  } else {
+    tickets = useCollection("tickets");
+  }
 
   useEffect(() => {
     if (user) {
-      console.log(user);
-      console.log(`You are ${!user.name}`);
+      // console.log(user);
+      // console.log(`You are ${!user.name}`);
       if (!user.name) {
         localStorage.setItem("admin-is-logged-in", false);
         localStorage.setItem("admin-logged-in-jti", "");
@@ -66,12 +103,9 @@ const Dashboard = () => {
     fetchOverviewStatus(tickets);
   }, [tickets]);
 
-  return histObject.state &&
-    // user &&
-    // user.name &&
-    localStorage.getItem("admin-logged-in-jti") === histObject.state.jti ? (
+  return (
     <div className="dashboard">
-      <Navbar />
+      {/* <Navbar user={user} /> */}
       <h1 className="dashboard-title">
         Welcome to Your Dashboard, {user && user.name}
       </h1>
@@ -82,7 +116,7 @@ const Dashboard = () => {
       </div>
       {/* <div className="copyright">© Class 1 Group 10, 2019</div> */}
     </div>
-  ) : null;
+  );
 };
 
-export default overviewStatus;
+export default Dashboard;
