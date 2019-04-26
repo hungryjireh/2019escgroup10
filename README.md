@@ -1,6 +1,6 @@
-# 2019escgroup10
+# 50.003 Elements of Software Construction Project by Cohort 2 Group 10
 
-Dependencies:
+Django REST Framework Dependencies:
 
 ```
 pip install djangorestframework
@@ -43,3 +43,5 @@ in the event of any loading errors. Else, run:
 python manage.py runserver
 ```
 to load the backend.
+
+Note: mysite is now deprecated and mysite_new is the latest version of the administrator panel for our web application.
