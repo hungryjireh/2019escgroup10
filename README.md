@@ -1,5 +1,20 @@
 # 50.003 Elements of Software Construction Project by Cohort 2 Group 10
 
+## Client-facing Chatbot
+
+Our chatbot is deployed at:
+https://bottybyacnapi.netlify.com/
+
+Our Telegram Messenger bot can be found at:
+@acnapibotty_bot
+
+## Administrator Dashboard
+
+Our administrator dashboard is deployed at:
+https://acnapi-335c7.firebaseapp.com/
+
+## Django REST Framework Backend
+
 Django REST Framework Dependencies:
 
 ```
