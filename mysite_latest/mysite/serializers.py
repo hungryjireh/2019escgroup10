@@ -1,6 +1,6 @@
-# from mysite.models import Message, AdminReply, UserReply, ReactMessage
+# from mysite.models import Message, AdminReply, UserReply, ReactMessage, Config, Priorities, Updates
 from mysite.models import ReactMessage
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from datetime import datetime
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -13,6 +13,15 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 import re
 
 from django.utils.six import text_type
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+# Use a service account
+cred = credentials.Certificate('acnapi-335c7-firebase-adminsdk-qp66v-dc60643228.json')
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 class ReactMessageSerializer(serializers.HyperlinkedModelSerializer):
     lastUpdatedTime = serializers.DateTimeField(read_only=True, format="%Y-%m-%d %H:%M:%S")
@@ -63,6 +72,11 @@ class ReactMessageSerializer(serializers.HyperlinkedModelSerializer):
         msg.send()
         return message
 
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Group
+        fields = ('name', 'url')
+
 class StaffSerializer(serializers.HyperlinkedModelSerializer):
     password = serializers.CharField(
         style={'input_type': 'password'},
@@ -74,6 +88,7 @@ class StaffSerializer(serializers.HyperlinkedModelSerializer):
     )
     date_joined = serializers.DateTimeField(read_only=True, format="%Y-%m-%d %H:%M:%S")
     last_login = serializers.DateTimeField(read_only=True, format="%Y-%m-%d %H:%M:%S")
+    groups = serializers.PrimaryKeyRelatedField(many=True, queryset=Group.objects.all())
     class Meta:
         model = User
         extra_kwargs = {
@@ -85,7 +100,7 @@ class StaffSerializer(serializers.HyperlinkedModelSerializer):
             'username': {'required': True},
             'is_staff': {'required': True},
         }
-        fields = ('first_name', 'last_name', 'email', 'password', 'confirm_password', 'last_login', 'date_joined', 'username', 'is_staff', 'url', 'id')
+        fields = ('first_name', 'last_name', 'email', 'password', 'confirm_password', 'last_login', 'date_joined', 'username', 'is_staff', 'url', 'id', 'groups')
     def create(self, validated_data):
         user = User(
             email = validated_data['email'],
@@ -111,6 +126,50 @@ class StaffSerializer(serializers.HyperlinkedModelSerializer):
         else:
             user.set_password(validated_data['password'])
             user.save()
+            group_array = []
+            for group in validated_data['groups']:
+                group.user_set.add(user)
+                group_array.append(group.name)
+            doc_ref = db.collection(u'users').document(str(user.id))
+            doc_ref.set({
+                u'name': validated_data['first_name'] + " " + validated_data['last_name'],
+                u'email': validated_data['email'],
+                u'position': 'admin',
+                u'config': {
+                    u'defaultSort': 'Status',
+                    'priorities': [
+                        {
+                            'criteria': "Unviewed",
+                            'highlight': "Blue",
+                        },
+                        {
+                            'criteria': "Await Your Reply",
+                            'highlight': "Purple",
+                        },
+                    ],
+                    u'groups': group_array,
+                    'updates': [
+                        True,
+                        True,
+                        True,
+                        False,
+                        False,
+                    ],
+                },
+            })
+            subject, from_email, to = 'Welcome to ACNAPI! Here are your login details', 'ACNAPI-SUTD <hello@acnapi.icu>', validated_data['email']
+            html_content = render_to_string("user_account_template.html", {
+                "first_name": validated_data['first_name'],
+                "last_name": validated_data['last_name'],
+                "username": validated_data['username'],
+            })
+            text_content = "Your CPU cannot process HTML?!"
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            if(msg.send()):
+                email_sent=True
+            else:
+                email_sent=False
             return user
 
 class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
@@ -137,7 +196,7 @@ class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
             'is_superuser': {'required': True},
             'is_staff': {'required': True},
         }
-        fields = ('first_name', 'last_name', 'email', 'password', 'confirm_password', 'last_login', 'date_joined', 'username', 'is_staff', 'is_superuser', 'url')
+        fields = ('first_name', 'last_name', 'email', 'password', 'confirm_password', 'last_login', 'date_joined', 'username', 'is_staff', 'is_superuser', 'url', 'id')
     def create(self, validated_data):
         user = User(
             first_name = validated_data['first_name'],
@@ -164,6 +223,37 @@ class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
         else:
             user.set_password(validated_data['password'])
             user.save()
+            group_array = []
+            for group in Group.objects.all():
+                group.user_set.add(user)
+                group_array.append(group.name)
+            doc_ref = db.collection(u'users').document(str(user.id))
+            doc_ref.set({
+                u'name': validated_data['first_name'] + " " + validated_data['last_name'],
+                u'email': validated_data['email'],
+                u'position': u'superadmin',
+                u'config': {
+                    u'defaultSort': 'Status',
+                    'priorities': [
+                        {
+                            'criteria': "Unviewed",
+                            'highlight': "Blue",
+                        },
+                        {
+                            'criteria': "Await Your Reply",
+                            'highlight': "Purple",
+                        },
+                    ],
+                    u'groups': group_array,
+                    'updates': [
+                        True,
+                        True,
+                        True,
+                        False,
+                        False,
+                    ],
+                },
+            })
             subject, from_email, to = 'Welcome to ACNAPI! Here are your login details', 'ACNAPI-SUTD <hello@acnapi.icu>', validated_data['email']
             html_content = render_to_string("user_account_template.html", {
                 "first_name": validated_data['first_name'],
@@ -178,6 +268,23 @@ class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
             else:
                 email_sent=False
             return user
+
+# class UpdatesSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Updates
+#         fields = ('0', '1', '2', '3')
+
+# class PrioritiesSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Priorities
+#         fields = ('criteria', 'highlight')
+
+# class ConfigSerializer(serializers.ModelSerializer):
+#     priorities = PrioritiesSerializer(read_only=True)
+#     updates = UpdatesSerializer(read_only=True)
+#     class Meta:
+#         model = Config
+#         fields = ('defaultSort', 'groups', 'priorities', 'updates')
 
 # class MessageSerializer(serializers.HyperlinkedModelSerializer):
 #     user = serializers.ReadOnlyField(source='user.username')
@@ -293,3 +400,30 @@ class SuperStaffSerializer(serializers.HyperlinkedModelSerializer):
 #         token = super(MyTokenObtainPairSerializer, cls).get_token(user)
 #         token['email'] = user.email
 #         return token
+# groups = [
+#     'API DevOps',
+#     'Chart as a Service',
+#     'Recruitment Platform',
+#     'Aesop',
+#     'Travel Marketplace',
+#     'Banking Lifestyle App',
+#     'AR Car Visualizer',
+#     'AR Car Manual',
+#     'AR Gamification',
+#     'AR Theatre',
+#     'AR Menu',
+#     'AR Wealth Manager',
+#     'Multilingual Chatbot',
+#     'AI Translator',
+#     'Digital Butler',
+#     'Video Analytics',
+#     'Sentiments Analysis',
+#     'ACNAPI MFA Login',
+#     'Ticketing Platform',
+#     'Smart Lock',
+#     'Smart Home',
+#     'Smart Parking',
+#     'Smart Restaurant',
+#     'Queuing System',
+#     'IoT Led Wall',
+# ]

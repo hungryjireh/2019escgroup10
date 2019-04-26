@@ -1,11 +1,11 @@
 from mysite.models import ReactMessage
-# from mysite.models import Message, AdminReply, UserReply, ReactMessage
+# from mysite.models import Message, AdminReply, UserReply, ReactMessage, Config, Priorities, Updates
 from mysite import views
-from mysite.serializers import StaffSerializer, SuperStaffSerializer, ReactMessageSerializer
-# from mysite.serializers import UserSerializer, StaffSerializer, SuperStaffSerializer, MessageSerializer, AdminReplySerializer, UserReplySerializer, ReactMessageSerializer
-from django.contrib.auth.models import User
+from mysite.serializers import StaffSerializer, SuperStaffSerializer, ReactMessageSerializer, GroupSerializer
+# from mysite.serializers import UserSerializer, StaffSerializer, SuperStaffSerializer, MessageSerializer, AdminReplySerializer, UserReplySerializer, ReactMessageSerializer, UpdatesSerializer, PrioritiesSerializer, ConfigSerializer
+from django.contrib.auth.models import User, Group
 from rest_framework import generics, permissions, renderers, viewsets, status, filters
-from rest_framework.decorators import api_view, action
+from rest_framework.decorators import api_view, action, throttle_classes
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from django.contrib.auth.hashers import make_password, check_password
@@ -15,8 +15,16 @@ from mysite.permissions import IsSuperUser
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework.decorators import api_view, permission_classes
+from mysite.prevention import UserLoginRateThrottle
 import re
 import datetime
+from rest_framework.throttling import UserRateThrottle
+
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+db = firestore.client()
 
 # Create your views here.
 
@@ -80,6 +88,7 @@ import datetime
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
+@throttle_classes(UserLoginRateThrottle,)
 def user_detail(request):
     if request.method == 'GET':
         if (request.user == "admin"):
@@ -89,6 +98,7 @@ def user_detail(request):
         return Response(serializer.data)
 
 @api_view(['GET', 'POST'])
+@throttle_classes(UserLoginRateThrottle,)
 def staff_list(request):
     '''
     List staff or create new staff
@@ -168,9 +178,18 @@ class ReactMessageViewSet(viewsets.ModelViewSet):
         self.perform_update(serializer)
         return Response(serializer.data)
 
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    Details of all groups in the current database.
+    """
+    serializer_class = GroupSerializer
+    ordering_fields = ('name',)
+    filter_backends = (filters.OrderingFilter,)
+    queryset = Group.objects.all()
+
 class StaffViewSet(viewsets.ModelViewSet):
     """
-    This viewset automatically provides `list` and `detail` actions.
+    Details of all administrators in the current database.
     """
     serializer_class = StaffSerializer
     permission_classes = (IsAdminUser,)
@@ -186,32 +205,39 @@ class StaffViewSet(viewsets.ModelViewSet):
         if (self.request.user.is_superuser):
             return User.objects.filter(is_staff=True, is_superuser=False)
         else:
-            return User.objects.filter(is_staff=True, is_superuser=False, username=user.username)
-
+            return User.objects.filter(is_staff=True, is_superuser=False, username=user.username)        
+    
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.password = request.data.get('password')
-        instance.confirm_password = request.data.get('confirm_password')
-        print(instance.password)
-        print(instance.confirm_password)
-        if instance.password != instance.confirm_password:
-            raise ValidationError({'no_match_password': 'Passwords do not match.'})
-        elif len(instance.password) < 8:
-            raise ValidationError({'short_password': 'Password too short. Password should be at least 8 characters long.'})
-        elif bool(re.match('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])', instance.password)) == False:
-            raise ValidationError({'weak_password': 'Password should contain numbers and at least one uppercase and at least one lowercase letter.'})
-        else:
-            instance.password = make_password(request.data.get('password'))
-            instance.save()
-
+        instance.first_name = request.data.get('first_name')
+        instance.last_name = request.data.get('last_name')
+        instance.email = request.data.get('email')
+        instance.username = request.data.get('username')
+        instance.is_staff = True
         serializer = self.get_serializer(data=instance)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data)
+        if request.data.get('password') == request.data.get('confirm_password'):
+            instance.set_password(request.data.get('password'))
+            instance.save()
+            user = db.collection(u'users').document(str(instance.id))
+            user.update({
+                u'name': instance.first_name + " " + instance.last_name,
+                u'email': instance.email,
+                # u'groups': group_array,
+            })
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        db.collection(u'users').document(str(instance.id)).delete()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class SuperStaffViewSet(viewsets.ModelViewSet):
     """
-    This viewset automatically provides `list` and `detail` actions.
+    Details of all super administrators in the current database.
     """
     serializer_class = SuperStaffSerializer
     permission_classes = (IsSuperUser,)
@@ -225,27 +251,34 @@ class SuperStaffViewSet(viewsets.ModelViewSet):
         """
         user = self.request.user
         return User.objects.filter(is_staff=True, is_superuser=True)
-    
+
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.password = request.data.get('password')
-        instance.confirm_password = request.data.get('confirm_password')
-        print(instance.password)
-        print(instance.confirm_password)
-        if instance.password != instance.confirm_password:
-            raise ValidationError({'no_match_password': 'Passwords do not match.'})
-        elif len(instance.password) < 8:
-            raise ValidationError({'short_password': 'Password too short. Password should be at least 8 characters long.'})
-        elif bool(re.match('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])', instance.password)) == False:
-            raise ValidationError({'weak_password': 'Password should contain numbers and at least one uppercase and at least one lowercase letter.'})
-        else:
-            instance.password = make_password(request.data.get('password'))
-            instance.save()
-
+        instance.first_name = request.data.get('first_name')
+        instance.last_name = request.data.get('last_name')
+        instance.email = request.data.get('email')
+        instance.username = request.data.get('username')
+        instance.is_staff = True
+        instance.is_superuser = True
         serializer = self.get_serializer(data=instance)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data)
+        if request.data.get('password') == request.data.get('confirm_password'):
+            instance.set_password(request.data.get('password'))
+            instance.save()
+            user = db.collection(u'users').document(str(instance.id))
+            user.update({
+                u'name': instance.first_name + " " + instance.last_name,
+                u'email': instance.email,
+            })
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        db.collection(u'users').document(str(instance.id)).delete()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 # class MessageViewSet(viewsets.ModelViewSet):
 #     """
@@ -357,3 +390,12 @@ class SuperStaffViewSet(viewsets.ModelViewSet):
 #             return UserReply.objects.all()
 #         else:
 #             return UserReply.objects.filter(user=user)       
+
+            # group_array = []
+            # for group in instance.groups.all():
+            #     group_array.append(group.name)
+            # print(group_array)
+            # print(request.data.get('groups'))
+            # t_group = Group.objects.get(pk=request.data.get('groups'))
+            # t_group.user_set.add(instance)
+            # group_array.append(t_group.name)

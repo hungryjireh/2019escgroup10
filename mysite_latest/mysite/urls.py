@@ -26,6 +26,7 @@ from django.contrib import admin
 router = routers.DefaultRouter()
 router.register(r'staff', views.StaffViewSet, base_name='staff')
 router.register(r'superstaff', views.SuperStaffViewSet, base_name='superstaff')
+router.register(r'groups', views.GroupViewSet, base_name='group')
 # router.register(r'reacttickets', views.ReactMessageViewSet)
 # router.register(r'tickets', views.MessageViewSet)
 # router.register(r'users', views.UserViewSet, base_name='user')

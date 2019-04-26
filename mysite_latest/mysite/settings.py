@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=$#3j7h=$c1#onxkoqdv84zby&zw=#(eyj4g=0@^v$3q9szd22'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -152,34 +152,29 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer'
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 100,
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.UserRateThrottle',
+
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'loginAttempts': '3/min',
+        'user': '1000/min',
+    },
 }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1440),
 }
 
-# DJANGO_TELEGRAMBOT = {
-#     'WEBHOOK_SITE' : 'https://stark-woodland-85926.herokuapp.com/',
-#     # 'WEBHOOK_SITE' : 'http://127.0.0.1:8000/',
-#     'BOTS' : [
-#         {
-#             'TOKEN': "887938131:AAFrjyZLSBrSmNIVGCkd1bUcS_dDKbNzlKU"
-#         }
-#     ],
-# }
-
 ANYMAIL = {
-    # "SENDGRID_API_KEY": "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",
-    "SENDGRID_API_KEY": "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",
+    "SENDGRID_API_KEY": "",
 }
 
 EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
 EMAIL_HOST = 'smtp.sendgrid.net'
-# EMAIL_HOST_USER = 'acnapisutd'
-# EMAIL_HOST_PASSWORD = 'Happyhappy96'
-EMAIL_HOST_USER = 'chiseng'
-EMAIL_HOST_PASSWORD = 'chiseng96'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
