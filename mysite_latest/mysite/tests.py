@@ -28,7 +28,7 @@ class CheckUserViewTest(APITestCase):
             'first_name': 'user',
             'last_name': 'tan',
             'email': 'hello@hello.com',
-            'is_staff': True,
+            'is_staff': 'True',
         }
         serializer = StaffSerializer(data=data)
         assert(serializer.is_valid())
@@ -103,49 +103,68 @@ class CheckUserViewTest(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.get('/superstaff/')
         self.assertEqual(response.status_code, 200)
-        
-class CheckTicketViewTest(APITestCase):
-    #successfully create a ticket without logging in (AllowAny)
-    def test_1(self):
-        response = self.client.post('/api/tickets/post/', {'requester': 'john', 'subject': 'Foo Bar', 'status': 'unviewed', 'group': 'api_devops', 'phone': '83283727', 'email': 'hungry@hungry.com', 'content': 'Hello!'}, format='json')
-        self.assertEqual(response.status_code, 201)
     
-    #create ticket as logged in user
-    def test_2(self):
+    #can view staff database as user has superuser privileges
+    def test_9(self):
+        self.username = 'john_doe'
+        self.password = 'foobar'
+        self.user = User.objects.create(username=self.username, password=self.password, is_superuser=True, is_staff=True)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get('/staff/')
+        self.assertEqual(response.status_code, 200)
+    
+    #can view staff database as user has superuser privileges
+    def test_10(self):
         self.username = 'john_doe'
         self.password = 'foobar'
         self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        response = self.client.post('/api/tickets/post/', {'requester': self.username, 'subject': 'Foo Bar', 'status': 'unviewed', 'group': 'api_devops', 'phone': '83283727', 'email': 'hungry@hungry.com', 'content': 'Hello!'}, format='json')
-        self.assertEqual(response.status_code, 201)
+        response = self.client.get('/staff/')
+        self.assertEqual(response.status_code, 200)
 
-    #invalid request: fields do not exist
-    def test_3(self):
-        self.username = 'john_doe'
-        self.password = 'foobar'
-        self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
-        self.client = APIClient()
-        self.client.force_authenticate(user=self.user)
-        response = self.client.post('/reacttickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'acnapi'}, format='json')
-        self.assertEqual(response.status_code, 400)
+# class CheckJWTToken(APITestCase):
+#     #1
+#     def test_1(self):
+#         self.username = 'john_doe'
+#         self.password = 'foobar'
+#         self.user = User.objects.create(username=self.username, password=self.password)
+#         self.client = APIClient()
+#         self.client.force_authenticate(user=self.user)
+#         response = self.client.post('/api/token', {'username': self.username, 'password': self.password}, format='json')
+#         self.assertEqual(response.status_code, 301)
+# class CheckTicketViewTest(APITestCase):
+#     #successfully create a ticket without logging in (AllowAny)
+#     def test_1(self):
+#         response = self.client.post('/api/tickets/post/', {'requester': 'john', 'subject': 'Foo Bar', 'status': 'unviewed', 'group': 'api_devops', 'phone': '83283727', 'email': 'hungry@hungry.com', 'content': 'Hello!'}, format='json')
+#         self.assertEqual(response.status_code, 201)
+    
+#     #create ticket as logged in user
+#     def test_2(self):
+#         self.username = 'john_doe'
+#         self.password = 'foobar'
+#         self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
+#         self.client = APIClient()
+#         self.client.force_authenticate(user=self.user)
+#         response = self.client.post('/api/tickets/post/', {'requester': self.username, 'subject': 'Foo Bar', 'status': 'unviewed', 'group': 'api_devops', 'phone': '83283727', 'email': 'hungry@hungry.com', 'content': 'Hello!'}, format='json')
+#         self.assertEqual(response.status_code, 201)
 
-    #unauthorized request: not logged in, thus not valid user and cannot view all tickets
-    def test_4(self):
-        response = self.client.get('/reacttickets/')
-        self.assertEqual(response.status_code, 401,
-            'Expected Response Code 401, received {0} instead.'.format(response.status_code))
+#     #invalid request: fields do not exist
+#     def test_3(self):
+#         self.username = 'john_doe'
+#         self.password = 'foobar'
+#         self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
+#         self.client = APIClient()
+#         self.client.force_authenticate(user=self.user)
+#         response = self.client.post('/reacttickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'acnapi'}, format='json')
+#         self.assertEqual(response.status_code, 400)
 
-class CheckJWTToken(APITestCase):
-    #1
-    def test_1(self):
-        self.username = 'john_doe'
-        self.password = 'foobar'
-        self.user = User.objects.create(username=self.username, password=self.password)
-        self.client = APIClient()
-        self.client.force_authenticate(user=self.user)
-        response = self.client.post('/api/token', {'username': self.username, 'password': self.password}, format='json')
-        self.assertEqual(response.status_code, 301)
+#     #unauthorized request: not logged in, thus not valid user and cannot view all tickets
+#     def test_4(self):
+#         response = self.client.get('/reacttickets/')
+#         self.assertEqual(response.status_code, 401,
+#             'Expected Response Code 401, received {0} instead.'.format(response.status_code))
 
 # class CheckUserLogin(APITestCase):
 #     def test_1(self):
