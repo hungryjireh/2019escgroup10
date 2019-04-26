@@ -44,4 +44,4 @@ python manage.py runserver
 ```
 to load the backend.
 
-Note: mysite is now deprecated and mysite_new is the latest version of the administrator panel for our web application.
+Note: mysite is now deprecated and mysite_latest is the latest version of the administrator panel for our web application.
