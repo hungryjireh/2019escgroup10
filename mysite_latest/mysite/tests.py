@@ -6,6 +6,7 @@ from mysite.views import SuperStaffViewSet, StaffViewSet
 from mysite.serializers import StaffSerializer, SuperStaffSerializer, ReactMessageSerializer
 from rest_framework.test import APIRequestFactory, force_authenticate, APITestCase, APIClient
 import unittest
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 import http.client
 import requests
@@ -123,6 +124,29 @@ class CheckUserViewTest(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.get('/staff/')
         self.assertEqual(response.status_code, 200)
+
+class database_testing(APITestCase):
+    def test_queryAdminUser(self):
+        user = User.objects.create_user(username='hello', password='Password123', is_staff=True)
+        username=User.objects.get(username='username')
+        password_valid=username.check_password('Password123')
+        self.assertEqual(username, 'hello')
+        self.assertTrue(password_valid)
+
+    def test_queryStaffUser(self):
+        user = User.objects.create_user(username='tan', password='p4ssw0Rd', is_staff=False)
+        username=User.objects.get(username='tan')
+        password_valid=username.check_password('p4ssw0Rd')
+        self.assertEqual(username, 'tan')
+        self.assertTrue(password_valid)
+
+    def test_queryDeletedUser(self):        
+        user = User.objects.create_user(username='accident', password='p5sSw0Rd', is_staff=False)
+        User.objects.get(username='accident').delete()
+        try:
+            User.objects.get(username='accident')
+        except:
+            self.assertRaises(ObjectDoesNotExist)
 
 # class CheckJWTToken(APITestCase):
 #     #1
