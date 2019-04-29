@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import styled from "styled-components";
 import history from "../history";
 import axios from "axios";
-import { deleteDB } from "idb";
+// import { deleteDB } from "idb";
 
 import { messaging } from "../firebase";
 import { image } from "faker";
@@ -46,7 +46,7 @@ const NavComp = ({ user, setPage }) => {
   };
 
   const handlePageButtonClick = e => {
-    localStorage.setItem("currentPage", e.target.innerText);
+    // localStorage.setItem("currentPage", e.target.innerText);
     setPage(e.target.innerText);
   };
 
@@ -97,8 +97,8 @@ const NavComp = ({ user, setPage }) => {
         <ListLi>
           <LiAnchor href="">
             <img
-              // src={require("../assets/images/sample-profile.png")}
-              src={image.avatar()}
+              src={require("../assets/images/john-profile.jpg")}
+              // src={image.avatar()}
               alt="Profile"
               style={{ width: "50px", borderRadius: "50px" }}
             />

@@ -42,6 +42,42 @@ const HeroContent = styled.div`
   }
 `;
 
+const ConfirmationPanel = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-top: 3rem;
+  width: 90%;
+  // border: 1px solid red;
+`;
+
+const ConfirmationButton = styled.button`
+  width: 12rem;
+  height: 4rem;
+  border-radius: 8px;
+  font-size: 1.6rem;
+  cursor: pointer;
+`;
+
+const AcceptConfirmationButton = styled(ConfirmationButton)`
+  border: 1px solid #1fad1f;
+  color: #1fad1f;
+
+  &:hover {
+    background-color: #1fad1f;
+    color: white;
+  }
+`;
+
+const RejectConfirmationButton = styled(ConfirmationButton)`
+  border: 1px solid #cb2431;
+  color: #cb2431;
+
+  &:hover {
+    background-color: #cb2431;
+    color: white;
+  }
+`;
+
 const MagicHeroComp = ({ ticket }) => {
   const renderSubtext = () => {
     if (ticket) {
@@ -68,6 +104,17 @@ const MagicHeroComp = ({ ticket }) => {
             <h3>
               An admin has <span>replied</span> to your ticket. You can scroll
               on down to see more details and continue the conversation.
+            </h3>
+          );
+        case "Await Closure":
+          return (
+            <h3>
+              We believe your ticket has been resolved and have
+              <span> requested closure</span>. Please respond to it below.
+              {/* <ConfirmationPanel>
+                <AcceptConfirmationButton>Accept</AcceptConfirmationButton>
+                <RejectConfirmationButton>Reject</RejectConfirmationButton>
+              </ConfirmationPanel> */}
             </h3>
           );
         case "Closed":

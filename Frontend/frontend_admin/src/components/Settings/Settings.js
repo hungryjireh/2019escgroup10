@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import DefaultsSection from "./DefaultsSection";
 import UpdatesSection from "./UpdatesSection";
-import useLockBodyScroll from "../../Modal/useLockBodyScroll";
+import useLockBodyScroll from "../../Hooks/useLockBodyScroll.js";
 
 const Settings = styled.div`
   position: fixed;

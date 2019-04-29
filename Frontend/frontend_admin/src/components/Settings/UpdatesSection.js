@@ -4,9 +4,7 @@ import "./Toggle.css";
 
 import { db } from "../../firebase";
 
-const UpdatesSection = styled.div`
-  //   border: 1px solid black;
-`;
+const UpdatesSection = styled.div``;
 
 const UpdatesTitle = styled.h2`
   font-size: 1.6rem;
@@ -19,7 +17,6 @@ const UpdateItem = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 3rem;
-  //   border: 1px solid black;
 `;
 
 const ItemHead = styled.span`

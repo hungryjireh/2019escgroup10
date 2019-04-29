@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 import ModalInfo from "./ModalInfo";
 import ModalConvo from "./ModalConvo";
-import useLockBodyScroll from "./useLockBodyScroll";
+import ModalActions from "./ModalActions";
+import useLockBodyScroll from "../../Hooks/useLockBodyScroll";
 
 const Modal = styled.div`
   position: fixed;
@@ -59,14 +60,40 @@ const ModalComp = ({ user, ticket, setHasModalFalse }) => {
   const [view, setView] = useState("Information");
 
   const handleHeadButtonClick = e => {
-    if (e.target.className.includes("info") && view === "Conversation") {
+    if (e.target.className.includes("info") && view !== "Information") {
       e.target.classList.toggle("active");
-      document.querySelector(".convo").classList.toggle("active");
+      if (document.querySelector(".convo").classList.contains("active")) {
+        document.querySelector(".convo").classList.toggle("active");
+      } else if (
+        document.querySelector(".actions").classList.contains("active")
+      ) {
+        document.querySelector(".actions").classList.toggle("active");
+      }
       setView("Information");
-    } else if (e.target.className.includes("convo") && view === "Information") {
+    } else if (
+      e.target.className.includes("convo") &&
+      view !== "Conversation"
+    ) {
       e.target.classList.toggle("active");
-      document.querySelector(".info").classList.toggle("active");
+      console.log(document.querySelector(".convo").classList);
+      if (document.querySelector(".info").classList.contains("active")) {
+        document.querySelector(".info").classList.toggle("active");
+      } else if (
+        document.querySelector(".actions").classList.contains("active")
+      ) {
+        document.querySelector(".actions").classList.toggle("active");
+      }
       setView("Conversation");
+    } else if (e.target.className.includes("actions") && view !== "Actions") {
+      e.target.classList.toggle("active");
+      if (document.querySelector(".info").classList.contains("active")) {
+        document.querySelector(".info").classList.toggle("active");
+      } else if (
+        document.querySelector(".convo").classList.contains("active")
+      ) {
+        document.querySelector(".convo").classList.toggle("active");
+      }
+      setView("Actions");
     }
   };
 
@@ -81,10 +108,14 @@ const ModalComp = ({ user, ticket, setHasModalFalse }) => {
           <button onClick={handleHeadButtonClick} className="convo">
             Conversation
           </button>
+          <button onClick={handleHeadButtonClick} className="actions">
+            Actions
+          </button>
           <span onClick={setHasModalFalse}>&#10006;</span>
         </ModalHead>
         {view === "Information" && <ModalInfo ticket={ticket} />}
         {view === "Conversation" && <ModalConvo user={user} ticket={ticket} />}
+        {view === "Actions" && <ModalActions user={user} ticket={ticket} />}
       </Modal>
     </div>
   );

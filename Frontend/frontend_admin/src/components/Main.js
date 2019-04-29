@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Router, Route } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 import { openDB } from "idb";
 
 import Navbar from "./Navbar";
 import Dashboard from "./Dashboard";
 import Statistics from "./Statistics/Statistics";
 import history from "../history";
-
 import { db, messaging } from "../firebase";
-
-import axios from "axios";
 
 const Main = styled.div``;
 
 const MainComp = ({ match }) => {
   const histObject = history.location;
 
-  const [page, setPage] = useState(
-    localStorage.getItem("currentPage") || "Dashboard"
-  );
+  const [page, setPage] = useState("Dashboard");
 
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -66,13 +61,9 @@ const MainComp = ({ match }) => {
   }, [user]);
 
   return histObject.state &&
-    // user &&
-    // tickets &&
-    // user.name &&
     localStorage.getItem("admin-logged-in-jti") === histObject.state.jti ? (
     <Main>
       <Navbar user={user} setPage={setPage} />
-      {/* <button onClick={handlePushButtonClick}>PUSH ME!</button> */}
       {page === "Dashboard" ? (
         <Dashboard user={user} />
       ) : (

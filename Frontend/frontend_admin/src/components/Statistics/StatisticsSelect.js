@@ -43,9 +43,6 @@ const StatisticsSelectComp = ({
             <option value="Number of tickets submitted">
               Number of tickets submitted
             </option>
-            {/* <option value="Tickets submitted by Group (%)">
-              Tickets submitted by Group (%)
-            </option> */}
             <option value="Tickets submitted by Group (abs)">
               Tickets submitted by Group (abs)
             </option>
@@ -73,7 +70,6 @@ const StatisticsSelectComp = ({
           <select value={rangeSelectValue} className="sort-select">
             <option value="Past 7 Days">Past 7 Days</option>
             <option value="Past 30 Days">Past 30 Days</option>
-            {/* <option value="Past 90 Days">Past 90 Days</option> */}
           </select>
         </div>
       </ItemSelect>

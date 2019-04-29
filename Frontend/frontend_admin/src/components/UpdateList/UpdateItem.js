@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { formatRelative } from "date-fns/esm";
 
 const UpdateItem = styled.li`
-  // border: 1px solid black;
   padding: 1.4rem;
   font-size: 1.4rem;
   color: #262626;
@@ -16,18 +15,15 @@ const UpdateItem = styled.li`
 `;
 
 const ItemMain = styled.div`
-  // border: 1px solid red;
   margin-bottom: 1rem;
 `;
 
 const ItemSub = styled.div`
-  // border: 1px solid green;
   margin-bottom: 2rem;
   color: #737373;
 `;
 
 const ItemInfo = styled.div`
-  // border: 1px solid blue;
   color: hsl(210, 36%, 80%);
   font-size: 1.2rem;
 `;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { db } from "../firebase";
-import history from "../history";
+import { db } from "../../firebase";
+import history from "../../history";
 
 const PlaceholderMagic = () => {
   const [ticket, setTicket] = useState({});

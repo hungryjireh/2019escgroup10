@@ -18,21 +18,6 @@ const useCollection = (path, orderBy, where = []) => {
         );
       }
     }
-    //     collection.onSnapshot(snapshot => {
-    //       let itemSet = [];
-    //       snapshot.forEach(item => {
-    //         itemSet.push({
-    //           ...item.data(),
-    //           id: item.id
-    //         });
-    //       });
-    //       console.log(itemSet);
-    //       items.concat(itemSet);
-    //     });
-    //   }
-    //   setItems(items);
-    // } else {
-    // }
     return collection.onSnapshot(snapshot => {
       const items = [];
       snapshot.forEach(item => {

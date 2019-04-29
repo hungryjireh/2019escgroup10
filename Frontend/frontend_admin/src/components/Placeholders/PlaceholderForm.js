@@ -1,7 +1,7 @@
 import React from "react";
-import { db, messaging } from "../firebase";
 
-import history from "../history";
+import { db } from "../../firebase";
+import history from "../../history";
 
 const handleFormSubmit = e => {
   e.preventDefault();

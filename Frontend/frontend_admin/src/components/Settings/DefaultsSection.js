@@ -10,7 +10,6 @@ const DefaultsItem = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 3rem;
-  //   border: 1px solid black;
 `;
 
 const ItemHead = styled.span`
@@ -46,7 +45,6 @@ const TableHead = styled.div`
 const TableContent = styled.div`
   height: calc(100% - 100px);
   overflow: scroll;
-  //   overscroll-behavior: none;
 `;
 
 const TableAdd = styled.div`
@@ -116,7 +114,6 @@ const ContentItem = styled.li`
 `;
 
 const WrongMessage = styled.div`
-  //   display: none;
   font-size: 1.4rem;
   color: red;
   text-align: right;
@@ -307,15 +304,8 @@ const DefaultsSectionComp = ({ user }) => {
                     return <option value={group}>{group}</option>;
                   })}
                 </optgroup>
-                {/* <option value="Add Criteria">Add Criteria</option>
-                <option value="Unviewed">Unviewed</option>
-                <option value="Await Your Reply">Await Your Reply</option>
-                <option value="Client Replied">Client Replied</option>
-                <option value="Admin Replied">Admin Replied</option>
-                <option value="Closed">Closed</option> */}
               </select>
             </div>
-            {/* <div className="color-box Yellow-bg" /> */}
             <div className="table-select">
               <select
                 value={highlightAddValue}

@@ -9,7 +9,6 @@ const ItemNum = styled.div`
   font-size: 5.2rem;
   color: ${props => (props.critical ? "#D64545" : "white")};
   margin-bottom: 2rem;
-  // border: 1px solid black;
 `;
 
 const ItemHeader = styled.div`

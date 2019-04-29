@@ -69,7 +69,6 @@ const FormButton = styled.button`
 `;
 
 const WrongWarning = styled.div`
-  // border: 1px solid black;
   width: 100%;
   height: 3rem;
   text-align: right;
@@ -93,54 +92,55 @@ const SignInFormComp = props => {
 
   const handleFormSubmit = e => {
     e.preventDefault();
-    axios
-      .post("https://stark-woodland-85926.herokuapp.com/api/token/", {
-        username: username,
-        password: password
-      })
-      .then(response => {
-        const decoded = decode(response.data.access);
-        localStorage.setItem("admin-is-logged-in", true);
-        localStorage.setItem("admin-logged-in-jti", decoded.jti);
-        localStorage.setItem("admin-logged-in-userid", decoded.user_id);
-        history.replace({
-          pathname: `/dashboard=${decoded.jti}`,
-          state: {
-            jti: decoded.jti,
-            userID: decoded.user_id
-          }
-        });
-      })
-      .catch(error => {
-        setIsWrong(true);
-      });
-
-    // var correctAuth = false;
-    // var user_id;
-    // if (username === "admin" && password === "happy") {
-    //   user_id = 1;
-    //   correctAuth = true;
-    // } else if (username === "bostan" && password === "happy") {
-    //   user_id = 9;
-    //   correctAuth = true;
-    // } else if (username === "hello" && password === "happy") {
-    //   user_id = 5;
-    //   correctAuth = true;
-    // } else {
-    //   setIsWrong(true);
-    // }
-    // if (correctAuth) {
-    //   localStorage.setItem("admin-is-logged-in", true);
-    //   localStorage.setItem("admin-logged-in-jti", "blablabla");
-    //   localStorage.setItem("admin-logged-in-userid", user_id);
-    //   history.replace({
-    //     pathname: `/main=blablabla`,
-    //     state: {
-    //       jti: "blablabla",
-    //       userID: user_id
-    //     }
+    // axios
+    //   .post("https://stark-woodland-85926.herokuapp.com/api/token/", {
+    //     username: username,
+    //     password: password
+    //   })
+    //   .then(response => {
+    //     const decoded = decode(response.data.access);
+    //     localStorage.setItem("admin-is-logged-in", true);
+    //     localStorage.setItem("admin-logged-in-jti", decoded.jti);
+    //     localStorage.setItem("admin-logged-in-userid", decoded.user_id);
+    //     localStorage.setItem("jwt", response.data.access);
+    //     history.replace({
+    //       pathname: `/dashboard=${decoded.jti}`,
+    //       state: {
+    //         jti: decoded.jti,
+    //         userID: decoded.user_id
+    //       }
+    //     });
+    //   })
+    //   .catch(error => {
+    //     setIsWrong(true);
     //   });
-    // }
+
+    var correctAuth = false;
+    var user_id;
+    if (username === "admin" && password === "happy") {
+      user_id = 1;
+      correctAuth = true;
+    } else if (username === "bostan" && password === "happy") {
+      user_id = 9;
+      correctAuth = true;
+    } else if (username === "hello" && password === "happy") {
+      user_id = 5;
+      correctAuth = true;
+    } else {
+      setIsWrong(true);
+    }
+    if (correctAuth) {
+      localStorage.setItem("admin-is-logged-in", true);
+      localStorage.setItem("admin-logged-in-jti", "blablabla");
+      localStorage.setItem("admin-logged-in-userid", user_id);
+      history.replace({
+        pathname: `/main=blablabla`,
+        state: {
+          jti: "blablabla",
+          userID: user_id
+        }
+      });
+    }
   };
 
   return (

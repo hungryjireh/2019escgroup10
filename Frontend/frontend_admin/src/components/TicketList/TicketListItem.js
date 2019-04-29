@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import "../style/TicketListItem.css";
+import React, { useState } from "react";
 import { formatRelative } from "date-fns/esm";
 
 import ReactDOM from "react-dom";
 import Modal from "../Modal/Modal";
-import { db } from "../firebase";
+import { db } from "../../firebase";
+import "./TicketListItem.css";
 
 const subjectTruncate = subjString => {
   if (subjString) {
@@ -18,19 +18,6 @@ const subjectTruncate = subjString => {
 
 const TicketListItem = ({ user, ticket, highlight }) => {
   const [hasModal, setHasModal] = useState(false);
-
-  // useEffect(() => {
-  //   if (ticket.status === "Unviewed") {
-  //     console.log("I am unviewed!");
-  //     document.querySelector(".ticketlistitem").style.backgroundColor =
-  //       "#fee29a";
-  //     console.log(document.querySelector(".ticketlistitem").classList);
-  //   } else {
-  //     document
-  //       .querySelector(".ticketlistitem")
-  //       .classList.remove("unviewed-ticket");
-  //   }
-  // }, [ticket.status]);
 
   const setHasModalFalse = () => {
     setHasModal(false);

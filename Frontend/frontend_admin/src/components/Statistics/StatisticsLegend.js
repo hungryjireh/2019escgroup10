@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const StatisticsLegend = styled.div`
   width: 100%;
   height: 3rem;
-  //   border: 1px solid blue;
 `;
 
 const LegendList = styled.ul`
@@ -12,7 +11,6 @@ const LegendList = styled.ul`
   justify-content: center;
   align-items: bottom;
   height: 100%;
-  //   border: 1px solid red;
 `;
 
 const LegendItem = styled.li`

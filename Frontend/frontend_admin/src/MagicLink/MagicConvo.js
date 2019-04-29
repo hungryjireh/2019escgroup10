@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { formatRelative } from "date-fns/esm";
 import axios from "axios";
 
-import useCollection from "../components/useCollection";
 import { db } from "../firebase";
 
 const MagicConvo = styled.div`

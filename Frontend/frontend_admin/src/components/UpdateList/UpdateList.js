@@ -2,14 +2,11 @@ import React from "react";
 import UpdateItem from "./UpdateItem";
 import styled from "styled-components";
 
-import useCollection from "./useCollection";
+import useCollection from "../../Hooks/useCollection";
 
 const UpdateList = styled.div`
   display: inline-block;
-  //   min-height: 500px;
-  //   max-height: 620px;
   width: calc((100vw - 80px) * (2.4 / 12));
-  /* border: 2px solid gold; */
   margin-left: auto;
   background-color: white;
   border-radius: 8px;
@@ -35,10 +32,6 @@ const HeaderButton = styled.button`
     border: none;
     background-color: inherit;
     font-size: 1.4rem;
-
-    // &:hover +.popup {
-    //     display: block;
-    // }
 `;
 
 const HeaderPopup = styled.div`
@@ -77,7 +70,6 @@ const ListContent = styled.ul`
   min-height: 500px;
   max-height: 580px;
   overflow: scroll;
-  //   overscroll-behavior: none;
 `;
 
 function handleHeaderButtonClick() {
@@ -171,22 +163,5 @@ const UpdateListComp = ({ user }) => {
     </UpdateList>
   );
 };
-
-// const UpdateList = (props) => {
-//     // const updates = props.updates.map((update) => {
-//     //     return <UpdateItem update={update} />
-//     // });
-
-//     return (
-//         <div className="updatelist">
-//             <div className="updatelist-header">
-//                 Your Updates
-//             </div>
-//             <ul>
-//                 <UpdateItem />
-//             </ul>
-//         </div>
-//     );
-// };
 
 export default UpdateListComp;

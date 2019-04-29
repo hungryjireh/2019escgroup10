@@ -7,8 +7,6 @@ import MagicNav from "./MagicNav";
 import history from "../history";
 import { db } from "../firebase";
 
-import ModalConvo from "../Modal/ModalConvo";
-
 const MagicLink = styled.div`
   background-color: #f9c03f;
   padding: 8rem 16rem;

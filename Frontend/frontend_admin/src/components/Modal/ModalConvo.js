@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { formatRelative } from "date-fns/esm";
 import axios from "axios";
 
-import { db } from "../firebase";
-import useCollection from "../components/useCollection";
+import { db } from "../../firebase";
+import useCollection from "../../Hooks/useCollection";
 
 function useAutoScroll(ref) {
   useEffect(() => {
@@ -213,8 +213,12 @@ const ModalConvoComp = ({ user, ticket }) => {
     e.preventDefault();
     const submitTime = new Date();
     if (ticket.status === "Await Your Reply") {
-      db.doc(`tickets/${ticket.id}`).update({
-        status: "Admin Replied"
+      const responseTime = new Date();
+      db.doc(`tickets/${ticket.id}`).set({
+        ...ticket,
+        status: "Admin Replied",
+        lastUpdatedTime: responseTime,
+        firstResponseTime: responseTime
       });
     }
     db.collection(`tickets/${ticket.id}/conversations`).add({
