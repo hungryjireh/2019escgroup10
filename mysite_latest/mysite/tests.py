@@ -6,6 +6,7 @@ from mysite.views import SuperStaffViewSet, StaffViewSet
 from mysite.serializers import StaffSerializer, SuperStaffSerializer, ReactMessageSerializer
 from rest_framework.test import APIRequestFactory, force_authenticate, APITestCase, APIClient
 import unittest
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 import http.client
 import requests
@@ -103,97 +104,135 @@ class CheckUserViewTest(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.get('/superstaff/')
         self.assertEqual(response.status_code, 200)
-        
-class CheckTicketViewTest(APITestCase):
-    #successfully create a ticket without logging in (AllowAny)
-    def test_1(self):
-        response = self.client.post('/api/tickets/post/', {'requester': 'john', 'subject': 'Foo Bar', 'status': 'unviewed', 'group': 'api_devops', 'phone': '83283727', 'email': 'hungry@hungry.com', 'content': 'Hello!'}, format='json')
-        self.assertEqual(response.status_code, 201)
     
-    #create ticket as logged in user
-    def test_2(self):
+    #can view staff database as user has superuser privileges
+    def test_9(self):
+        self.username = 'john_doe'
+        self.password = 'foobar'
+        self.user = User.objects.create(username=self.username, password=self.password, is_superuser=True, is_staff=True)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get('/staff/')
+        self.assertEqual(response.status_code, 200)
+    
+    #can view staff database as user has superuser privileges
+    def test_10(self):
         self.username = 'john_doe'
         self.password = 'foobar'
         self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        response = self.client.post('/api/tickets/post/', {'requester': self.username, 'subject': 'Foo Bar', 'status': 'unviewed', 'group': 'api_devops', 'phone': '83283727', 'email': 'hungry@hungry.com', 'content': 'Hello!'}, format='json')
-        self.assertEqual(response.status_code, 201)
-
-    #invalid request: fields do not exist
-    def test_3(self):
-        self.username = 'john_doe'
-        self.password = 'foobar'
-        self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
-        self.client = APIClient()
-        self.client.force_authenticate(user=self.user)
-        response = self.client.post('/reacttickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'acnapi'}, format='json')
-        self.assertEqual(response.status_code, 400)
-
-    #unauthorized request: not logged in, thus not valid user and cannot view all tickets
-    def test_4(self):
-        response = self.client.get('/reacttickets/')
-        self.assertEqual(response.status_code, 401,
-            'Expected Response Code 401, received {0} instead.'.format(response.status_code))
-
-    #authorized request: logged in as admin, thus can view all tickets
-    def test_5(self):
-        self.username = 'john_doe'
-        self.password = 'foobar'
-        self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
-        self.client = APIClient()
-        self.client.force_authenticate(user=self.user)
-        response = self.client.get('/reacttickets/')
+        response = self.client.get('/staff/')
         self.assertEqual(response.status_code, 200)
 
-    #authorized request: logged in as user, and can view tickets
-    def test_6(self):
-        self.username = 'john_doe'
-        self.password = 'foobar'
-        self.user = User.objects.create(username=self.username, password=self.password)
-        self.client = APIClient()
-        self.client.force_authenticate(user=self.user)
-        response = self.client.get('/reacttickets/')
-        self.assertEqual(response.status_code, 200)
+class database_testing(APITestCase):
+    def test_queryAdminUser(self):
+        user = User.objects.create_user(username='hello', password='Password123', is_staff=True)
+        username=User.objects.get(username='username')
+        password_valid=username.check_password('Password123')
+        self.assertEqual(username, 'hello')
+        self.assertTrue(password_valid)
 
-class CheckReactMessageTest(APITestCase):
-    #serializing a valid ticket
-    def test_1(self):
-        data = {
-            'requester': 'john', 
-            'subject': 'Foo Bar', 
-            'status': 'unviewed', 
-            'group': 'api_devops', 
-            'phone': '83283727', 
-            'email': 'hungry@hungry.com', 
-            'content': 'Hello!'
-        }
-        serializer = ReactMessageSerializer(data=data)
-        assert(serializer.is_valid())
+    def test_queryStaffUser(self):
+        user = User.objects.create_user(username='tan', password='p4ssw0Rd', is_staff=False)
+        username=User.objects.get(username='tan')
+        password_valid=username.check_password('p4ssw0Rd')
+        self.assertEqual(username, 'tan')
+        self.assertTrue(password_valid)
 
-    #serializing an incomplete ticket - missing content section
-    def test_2(self):
-        data = {
-            'requester': 'john', 
-            'subject': 'Foo Bar', 
-            'status': 'unviewed', 
-            'group': 'api_devops', 
-            'phone': '83283727', 
-            'email': 'hungry@hungry.com', 
-        }
-        serializer = ReactMessageSerializer(data=data)
-        self.assertFalse(serializer.is_valid())
+    def test_queryDeletedUser(self):        
+        user = User.objects.create_user(username='accident', password='p5sSw0Rd', is_staff=False)
+        User.objects.get(username='accident').delete()
+        try:
+            User.objects.get(username='accident')
+        except:
+            self.assertRaises(ObjectDoesNotExist)
 
-class CheckJWTToken(APITestCase):
-    #1
-    def test_1(self):
-        self.username = 'john_doe'
-        self.password = 'foobar'
-        self.user = User.objects.create(username=self.username, password=self.password)
-        self.client = APIClient()
-        self.client.force_authenticate(user=self.user)
-        response = self.client.post('/api/token', {'username': self.username, 'password': self.password}, format='json')
-        self.assertEqual(response.status_code, 301)
+# class CheckJWTToken(APITestCase):
+#     #1
+#     def test_1(self):
+#         self.username = 'john_doe'
+#         self.password = 'foobar'
+#         self.user = User.objects.create(username=self.username, password=self.password)
+#         self.client = APIClient()
+#         self.client.force_authenticate(user=self.user)
+#         response = self.client.post('/api/token', {'username': self.username, 'password': self.password}, format='json')
+#         self.assertEqual(response.status_code, 301)
+# class CheckTicketViewTest(APITestCase):
+#     #successfully create a ticket without logging in (AllowAny)
+#     def test_1(self):
+#         response = self.client.post('/api/tickets/post/', {'requester': 'john', 'subject': 'Foo Bar', 'status': 'unviewed', 'group': 'api_devops', 'phone': '83283727', 'email': 'hungry@hungry.com', 'content': 'Hello!'}, format='json')
+#         self.assertEqual(response.status_code, 201)
+    
+#     #create ticket as logged in user
+#     def test_2(self):
+#         self.username = 'john_doe'
+#         self.password = 'foobar'
+#         self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
+#         self.client = APIClient()
+#         self.client.force_authenticate(user=self.user)
+#         response = self.client.post('/api/tickets/post/', {'requester': self.username, 'subject': 'Foo Bar', 'status': 'unviewed', 'group': 'api_devops', 'phone': '83283727', 'email': 'hungry@hungry.com', 'content': 'Hello!'}, format='json')
+#         self.assertEqual(response.status_code, 201)
+
+#     #invalid request: fields do not exist
+#     def test_3(self):
+#         self.username = 'john_doe'
+#         self.password = 'foobar'
+#         self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
+#         self.client = APIClient()
+#         self.client.force_authenticate(user=self.user)
+#         response = self.client.post('/reacttickets/', {'issue_description': 'Foo Bar', 'priority': '1', 'categories': 'acnapi'}, format='json')
+#         self.assertEqual(response.status_code, 400)
+
+#     #unauthorized request: not logged in, thus not valid user and cannot view all tickets
+#     def test_4(self):
+#         response = self.client.get('/reacttickets/')
+#         self.assertEqual(response.status_code, 401,
+#             'Expected Response Code 401, received {0} instead.'.format(response.status_code))
+
+# class CheckUserLogin(APITestCase):
+#     def test_1(self):
+#         for i in range(3):
+#             self.username='admin'
+#             self.password='happy324'
+#             self.user = User.objects.create(username=self.username, password=self.password)
+#             self.client = APIClient()
+#             self.client.force_authenticate(user=self.user)
+#         self.username='admin'
+#         self.password='happy'
+#         self.user = User.objects.create(username=self.username, password=self.password)
+#         self.client = APIClient()
+#         self.client.force_authenticate(user=self.user)
+#         response = self.client.get('/staff/')
+#         self.assertContainsAny(response, "User has been throttled for 60s")
+
+# class CheckReactMessageTest(APITestCase):
+#     #serializing a valid ticket
+#     def test_1(self):
+#         data = {
+#             'requester': 'john', 
+#             'subject': 'Foo Bar', 
+#             'status': 'unviewed', 
+#             'group': 'api_devops', 
+#             'phone': '83283727', 
+#             'email': 'hungry@hungry.com', 
+#             'content': 'Hello!'
+#         }
+#         serializer = ReactMessageSerializer(data=data)
+#         assert(serializer.is_valid())
+
+#     #serializing an incomplete ticket - missing content section
+#     def test_2(self):
+#         data = {
+#             'requester': 'john', 
+#             'subject': 'Foo Bar', 
+#             'status': 'unviewed', 
+#             'group': 'api_devops', 
+#             'phone': '83283727', 
+#             'email': 'hungry@hungry.com', 
+#         }
+#         serializer = ReactMessageSerializer(data=data)
+#         self.assertFalse(serializer.is_valid())
 
     #testing creating user with missing field (last_name)
     # def test_5(self):
@@ -261,6 +300,26 @@ class CheckJWTToken(APITestCase):
     #     }
     #     seralizer=StaffSerializer(data)
     #     self.assertEqual(len(msg.outbox), 1)
+
+    #     #authorized request: logged in as admin, thus can view all tickets
+    # def test_5(self):
+    #     self.username = 'john_doe'
+    #     self.password = 'foobar'
+    #     self.user = User.objects.create(username=self.username, password=self.password, is_staff=True)
+    #     self.client = APIClient()
+    #     self.client.force_authenticate(user=self.user)
+    #     response = self.client.get('/reacttickets/')
+    #     self.assertEqual(response.status_code, 200)
+
+    # #authorized request: logged in as user, and can view tickets
+    # def test_6(self):
+    #     self.username = 'john_doe'
+    #     self.password = 'foobar'
+    #     self.user = User.objects.create(username=self.username, password=self.password)
+    #     self.client = APIClient()
+    #     self.client.force_authenticate(user=self.user)
+    #     response = self.client.get('/reacttickets/')
+    #     self.assertEqual(response.status_code, 200)
 
 # class CheckJWTToken(APITestCase):
 #     def test_1(self):

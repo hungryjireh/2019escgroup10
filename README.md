@@ -1,6 +1,21 @@
-# 2019escgroup10
+# 50.003 Elements of Software Construction Project by Cohort 2 Group 10
 
-Dependencies:
+## Client-facing Chatbot
+
+Our chatbot is deployed at:
+https://bottybyacnapi.netlify.com/
+
+Our Telegram Messenger bot can be found at:
+@acnapibotty_bot
+
+## Administrator Dashboard
+
+Our administrator dashboard is deployed at:
+https://acnapi-335c7.firebaseapp.com/
+
+## Django REST Framework Backend
+
+Django REST Framework Dependencies:
 
 ```
 pip install djangorestframework
@@ -43,3 +58,5 @@ in the event of any loading errors. Else, run:
 python manage.py runserver
 ```
 to load the backend.
+
+Note: mysite is now deprecated and mysite_latest is the latest version of the administrator panel for our web application.
