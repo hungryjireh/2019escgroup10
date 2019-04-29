@@ -199,7 +199,11 @@ const BotChattingComp = () => {
             header={true}
             message={{
               source: "bot",
-              content: "Hello! My name is Botty. How may I help you today?",
+              content: `Hello${
+                localStorage.getItem("chatflowName")
+                  ? " " + localStorage.getItem("chatflowName")
+                  : ""
+              }! My name is Botty. How may I help you today?`,
               submitTime: new Date()
             }}
           />
@@ -242,7 +246,8 @@ const BotChattingComp = () => {
       await axios.post(`${host}/api/df_text_query`, {
         text: value,
         chatflowID: localStorage.getItem("chatflowID"),
-        fromReact: true
+        fromReact: true,
+        chatflowName: localStorage.getItem("chatflowName")
       });
     }
   };

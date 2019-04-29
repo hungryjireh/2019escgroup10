@@ -1,0 +1,5 @@
+@media (max-width: 380px) {
+  .g-recaptcha {
+    transform: scale(0.75);
+  }
+}

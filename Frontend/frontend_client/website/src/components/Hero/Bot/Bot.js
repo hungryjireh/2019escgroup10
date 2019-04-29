@@ -26,10 +26,11 @@ const Bot = styled.div`
 
   @media (max-width: 1100px) {
     margin-right: 0rem;
-    min-width: 320px;
+    // min-width: 320px;
   }
 
   @media (max-width: 380px) {
+    min-width: 320px;
     max-width: 320px;
   }
 `;
@@ -54,9 +55,14 @@ const BotComp = () => {
     <Bot>
       <MemoryRouter style={{ width: "100%", height: "100%" }}>
         <div style={{ width: "100%", height: "100%" }}>
-          {/* <Route path="/" exact component={BotStart} /> */}
-          {/* <Route path="/botchatting" component={BotChatting} /> */}
-          <Route path="/" component={BotChatting} />
+          {localStorage.getItem("chatflowID") ? (
+            <Route path="/" component={BotChatting} />
+          ) : (
+            <div style={{ width: "100%", height: "100%" }}>
+              <Route path="/" exact component={BotStart} />
+              <Route path="/botchatting" component={BotChatting} />
+            </div>
+          )}
         </div>
       </MemoryRouter>
     </Bot>
